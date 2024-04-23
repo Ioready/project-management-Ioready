@@ -71,6 +71,50 @@ class TaxController extends Controller
         }
     }
 
+
+    public function invoiceTaxCreate()
+    {
+        if(\Auth::user()->can('create constant tax'))
+        {
+            return view('invoice.tax_create');
+        }
+        else
+        {
+            return response()->json(['error' => __('Permission denied.')], 401);
+        }
+    }
+
+    public function invoiceTaxStore(Request $request)
+    {
+        if(\Auth::user()->can('create constant tax'))
+        {
+            $validator = \Validator::make(
+                $request->all(), [
+                                   'name' => 'required|max:20',
+                                   'rate' => 'required|numeric',
+                               ]
+            );
+            if($validator->fails())
+            {
+                $messages = $validator->getMessageBag();
+
+                return redirect()->back()->with('error', $messages->first());
+            }
+
+            $tax             = new Tax();
+            $tax->name       = $request->name;
+            $tax->rate       = $request->rate;
+            $tax->created_by = \Auth::user()->creatorId();
+            $tax->save();
+
+            return redirect()->route('invoice.index')->with('success', __('Tax rate successfully created.'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
     public function show(Tax $tax)
     {
         return redirect()->route('taxes.index');

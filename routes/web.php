@@ -409,6 +409,21 @@ Route::group(['middleware' => ['verified']], function () {
         }
     );
 
+    Route::get('invoice/customer/create', [CustomerController::class, 'customerCreate'])->name('invoice.create_customer');
+    Route::post('invoice/customer_store', [CustomerController::class, 'CustomerStore'])->name('invoice.customer_store');
+
+    Route::get('invoice/category/create', [ProductServiceCategoryController::class, 'categoryCreate'])->name('invoice.create_category');
+    Route::post('invoice/category_store', [ProductServiceCategoryController::class, 'categoryStore'])->name('invoice.category_store');
+
+    Route::get('invoice/product_service/create', [ProductServiceController::class, 'productCreate'])->name('invoice.create_product_service');
+    Route::post('invoice/product_service_store', [ProductServiceController::class, 'productStore'])->name('invoice.product_service_store');
+
+
+    Route::get('invoice/tax/create', [TaxController::class, 'invoiceTaxCreate'])->name('invoice.create_tax');
+    Route::post('invoice/tax_store', [TaxController::class, 'invoiceTaxStore'])->name('invoice.tax_store');
+
+    Route::get('invoice/product_unit/create', [ProductServiceUnitController::class, 'invoiceUnitCreate'])->name('invoice.create_product_unit');
+    Route::post('invoice/product_unit_store', [ProductServiceUnitController::class, 'invoiceUnitStore'])->name('invoice.product_unit_store');
     //Vendor
     Route::group(
         [

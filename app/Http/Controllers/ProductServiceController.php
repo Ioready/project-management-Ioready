@@ -181,6 +181,134 @@ class ProductServiceController extends Controller
         }
     }
 
+
+    public function productCreate()
+    {
+        if(\Auth::user()->can('create product & service'))
+        {
+            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'product')->get();
+            $category     = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'product & service')->get()->pluck('name', 'id');
+            $unit         = ProductServiceUnit::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $tax          = Tax::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $incomeChartAccounts = ChartOfAccount::select(\DB::raw('CONCAT(chart_of_accounts.code, " - ", chart_of_accounts.name) AS code_name, chart_of_accounts.id as id'))
+                ->leftjoin('chart_of_account_types', 'chart_of_account_types.id','chart_of_accounts.type')
+                ->where('chart_of_account_types.name' ,'income')
+                ->where('parent', '=', 0)
+                ->where('chart_of_accounts.created_by', \Auth::user()->creatorId())->get()
+                ->pluck('code_name', 'id');
+            $incomeChartAccounts->prepend('Select Account', 0);
+
+            $incomeSubAccounts = ChartOfAccount::select(\DB::raw('CONCAT(chart_of_accounts.code, " - ", chart_of_accounts.name) AS code_name,chart_of_accounts.id, chart_of_accounts.code, chart_of_account_parents.account'));
+            $incomeSubAccounts->leftjoin('chart_of_account_parents', 'chart_of_accounts.parent', 'chart_of_account_parents.id');
+            $incomeSubAccounts->leftjoin('chart_of_account_types', 'chart_of_account_types.id','chart_of_accounts.type');
+            $incomeSubAccounts->where('chart_of_account_types.name' ,'income');
+            $incomeSubAccounts->where('chart_of_accounts.parent', '!=', 0);
+            $incomeSubAccounts->where('chart_of_accounts.created_by', \Auth::user()->creatorId());
+            $incomeSubAccounts = $incomeSubAccounts->get()->toArray();
+
+
+            $expenseChartAccounts = ChartOfAccount::select(\DB::raw('CONCAT(chart_of_accounts.code, " - ", chart_of_accounts.name) AS code_name, chart_of_accounts.id as id'))
+            ->leftjoin('chart_of_account_types', 'chart_of_account_types.id','chart_of_accounts.type')
+            ->whereIn('chart_of_account_types.name' ,['Expenses','Costs of Goods Sold'])
+            ->where('chart_of_accounts.created_by', \Auth::user()->creatorId())->get()
+            ->pluck('code_name', 'id');
+            $expenseChartAccounts->prepend('Select Account', '');
+
+            $expenseSubAccounts = ChartOfAccount::select(\DB::raw('CONCAT(chart_of_accounts.code, " - ", chart_of_accounts.name) AS code_name,chart_of_accounts.id, chart_of_accounts.code, chart_of_account_parents.account'));
+            $expenseSubAccounts->leftjoin('chart_of_account_parents', 'chart_of_accounts.parent', 'chart_of_account_parents.id');
+            $expenseSubAccounts->leftjoin('chart_of_account_types', 'chart_of_account_types.id','chart_of_accounts.type');
+            $expenseSubAccounts->whereIn('chart_of_account_types.name' ,['Expenses','Costs of Goods Sold']);
+            $expenseSubAccounts->where('chart_of_accounts.parent', '!=', 0);
+            $expenseSubAccounts->where('chart_of_accounts.created_by', \Auth::user()->creatorId());
+            $expenseSubAccounts = $expenseSubAccounts->get()->toArray();
+
+            return view('invoice.product_create', compact('category', 'unit', 'tax', 'customFields','incomeChartAccounts','incomeSubAccounts','expenseChartAccounts' , 'expenseSubAccounts'));
+        }
+        else
+        {
+            return response()->json(['error' => __('Permission denied.')], 401);
+        }
+    }
+
+    public function productStore(Request $request)
+    {
+
+       
+        if(\Auth::user()->can('create product & service'))
+        {
+
+            $rules = [
+                'name' => 'required',
+                'sku' => ['required', Rule::unique('product_services')->where(function ($query) {
+                   return $query->where('created_by', \Auth::user()->id);
+                 })
+                ],
+                'sale_price' => 'required|numeric',
+                'purchase_price' => 'required|numeric',
+                'category_id' => 'required',
+                'unit_id' => 'required',
+                'type' => 'required',
+            ];
+
+            $validator = \Validator::make($request->all(), $rules);
+
+            if($validator->fails())
+            {
+                $messages = $validator->getMessageBag();
+
+                return redirect()->route('productservice.index')->with('error', $messages->first());
+            }
+
+            $productService                      = new ProductService();
+            $productService->name                = $request->name;
+            $productService->description         = $request->description;
+            $productService->sku                 = $request->sku;
+            $productService->sale_price          = $request->sale_price;
+            $productService->purchase_price      = $request->purchase_price;
+            $productService->tax_id              = !empty($request->tax_id) ? implode(',', $request->tax_id) : '';
+            $productService->unit_id             = $request->unit_id;
+            if(!empty($request->quantity))
+            {
+                $productService->quantity        = $request->quantity;
+            }
+            else{
+                $productService->quantity   = 0;
+            }
+            $productService->type                       = $request->type;
+            $productService->sale_chartaccount_id       = $request->sale_chartaccount_id;
+            $productService->expense_chartaccount_id    = $request->expense_chartaccount_id;
+            $productService->category_id                = $request->category_id;
+
+            if(!empty($request->pro_image))
+            {
+                //storage limit
+                $image_size = $request->file('pro_image')->getSize();
+                $result = Utility::updateStorageLimit(\Auth::user()->creatorId(), $image_size);
+                if($result==1)
+                {
+                    if($productService->pro_image)
+                    {
+                        $path = storage_path('uploads/pro_image' . $productService->pro_image);
+                    }
+                    $fileName = $request->pro_image->getClientOriginalName();
+                    $productService->pro_image = $fileName;
+                    $dir        = 'uploads/pro_image';
+                    $path = Utility::upload_file($request,'pro_image',$fileName,$dir,[]);
+                }
+            }
+
+            $productService->created_by       = \Auth::user()->creatorId();
+            $productService->save();
+            CustomField::saveData($productService, $request->customField);
+
+            return redirect()->route('invoice.index')->with('success', __('Product successfully created.'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
     public function show()
     {
         return redirect()->route('productservice.index');

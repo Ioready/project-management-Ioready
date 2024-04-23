@@ -64,6 +64,48 @@ class ProductServiceUnitController extends Controller
         }
     }
 
+    public function invoiceUnitCreate()
+    {
+        if(\Auth::user()->can('create constant unit'))
+        {
+            return view('invoice.product_unit_create');
+        }
+        else
+        {
+            return response()->json(['error' => __('Permission denied.')], 401);
+        }
+    }
+
+
+    public function invoiceUnitStore(Request $request)
+    {
+        if(\Auth::user()->can('create constant unit'))
+        {
+            $validator = \Validator::make(
+                $request->all(), [
+                                   'name' => 'required|max:20',
+                               ]
+            );
+            if($validator->fails())
+            {
+                $messages = $validator->getMessageBag();
+
+                return redirect()->back()->with('error', $messages->first());
+            }
+
+            $category             = new ProductServiceUnit();
+            $category->name       = $request->name;
+            $category->created_by = \Auth::user()->creatorId();
+            $category->save();
+
+            return redirect()->route('invoice.index')->with('success', __('Unit successfully created.'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
 
     public function edit($id)
     {

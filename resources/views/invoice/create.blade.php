@@ -379,6 +379,9 @@
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group" id="customer-box">
                                 {{ Form::label('customer_id', __('Customer'),['class'=>'form-label']) }}
+                                <a href="#" data-size="lg" data-url="{{ route('invoice.create_customer') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create Customer')}}" class="btn btn-sm btn-primary">
+            <i class="ti ti-plus"></i>
+        </a>
                                 {{ Form::select('customer_id', $customers,$customerId, array('class' => 'form-control select','id'=>'customer','data-url'=>route('invoice.customer'),'required'=>'required')) }}
 
                             </div>
@@ -417,6 +420,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}
+
+                                        @can('create constant category')
+                                            <a href="#" data-url="{{ route('invoice.create_category') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" title="{{__('Create')}}" data-title="{{__('Create New Category')}}"  class="btn btn-sm btn-primary">
+                                                <i class="ti ti-plus"></i>
+                                            </a>
+                                        @endcan
+
                                         {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
                                     </div>
                                 </div>
@@ -473,7 +483,9 @@
                         <table class="table mb-0 table-custom-style" data-repeater-list="items" id="sortable-table">
                             <thead>
                             <tr>
-                                <th>{{__('Items')}}</th>
+                                <th>{{__('Items')}} <a href="#" data-size="lg" data-url="{{ route('invoice.create_product_service') }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="{{__('Create New Product & Service')}}" class="btn btn-sm btn-primary">
+                                    <i class="ti ti-plus"></i>
+                                </a></th>
                                 <th>{{__('Quantity')}}</th>
                                 <th>{{__('Price')}} </th>
                                 <th>{{__('Discount')}}</th>

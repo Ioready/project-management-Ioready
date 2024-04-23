@@ -58,7 +58,110 @@ class CustomerController extends Controller
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
+    public function customerCreate()
+    {
+        if(\Auth::user()->can('create customer'))
+        {
+            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
+            return view('invoice.customer_create', compact('customFields'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
+
+    public function CustomerStore(Request $request)
+    {
+       
+        if(\Auth::user()->can('create customer'))
+        {
+
+            $rules = [
+                'name' => 'required',
+                'contact' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+                'email' => [
+                    'required',
+                    Rule::unique('customers')->where(function ($query) {
+                        return $query->where('created_by', \Auth::user()->id);
+                    })
+                ],
+            ];
+
+
+            $validator = \Validator::make($request->all(), $rules);
+
+            if($validator->fails())
+            {
+                $messages = $validator->getMessageBag();
+                return redirect()->route('customer.index')->with('error', $messages->first());
+            }
+
+            $objCustomer    = \Auth::user();
+            $creator        = User::find($objCustomer->creatorId());
+            $total_customer = $objCustomer->countCustomers();
+            $plan           = Plan::find($creator->plan);
+
+            $default_language          = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+            if($total_customer < $plan->max_customers || $plan->max_customers == -1)
+            {
+                $customer                  = new Customer();
+                $customer->customer_id     = $this->customerNumber();
+                $customer->name            = $request->name;
+                $customer->contact         = $request->contact;
+                $customer->email           = $request->email;
+                $customer->tax_number      =$request->tax_number;
+                $customer->created_by      = \Auth::user()->creatorId();
+                $customer->billing_name    = $request->billing_name;
+                $customer->billing_country = $request->billing_country;
+                $customer->billing_state   = $request->billing_state;
+                $customer->billing_city    = $request->billing_city;
+                $customer->billing_phone   = $request->billing_phone;
+                $customer->billing_zip     = $request->billing_zip;
+                $customer->billing_address = $request->billing_address;
+
+                $customer->shipping_name    = $request->shipping_name;
+                $customer->shipping_country = $request->shipping_country;
+                $customer->shipping_state   = $request->shipping_state;
+                $customer->shipping_city    = $request->shipping_city;
+                $customer->shipping_phone   = $request->shipping_phone;
+                $customer->shipping_zip     = $request->shipping_zip;
+                $customer->shipping_address = $request->shipping_address;
+
+                $customer->lang = !empty($default_language) ? $default_language->value : '';
+
+                $customer->save();
+                CustomField::saveData($customer, $request->customField);
+            }
+            else
+            {
+                return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
+            }
+
+            //For Notification
+            $setting  = Utility::settings(\Auth::user()->creatorId());
+            $customerNotificationArr = [
+                'user_name' => \Auth::user()->name,
+                'customer_name' => $customer->name,
+                'customer_email' => $customer->email,
+            ];
+
+            //Twilio Notification
+            if(isset($setting['twilio_customer_notification']) && $setting['twilio_customer_notification'] ==1)
+            {
+                Utility::send_twilio_msg($request->contact,'new_customer', $customerNotificationArr);
+            }
+
+
+            return redirect()->route('invoice.index')->with('success', __('Customer successfully created.'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
 
     public function store(Request $request)
     {

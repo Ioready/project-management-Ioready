@@ -41,6 +41,59 @@ class ProductServiceCategoryController extends Controller
         }
     }
 
+    public function categoryCreate()
+    {
+        if (\Auth::user()->can('create constant category')) {
+            $types = ProductServiceCategory::$catTypes;
+            $type = ['' => 'Select Category Type'];
+
+            $types = array_merge($type, $types);
+
+            $chart_accounts = ChartOfAccount::select(\DB::raw('CONCAT(code, " - ", name) AS code_name, id'))
+                ->where('created_by', \Auth::user()->creatorId())->get()
+                ->pluck('code_name', 'id');
+            $chart_accounts->prepend('Select Account', '');
+
+            return view('invoice.category_create', compact('types', 'chart_accounts'));
+        } else {
+            return response()->json(['error' => __('Permission denied.')], 401);
+        }
+    }
+
+
+    public function categoryStore(Request $request)
+    {
+
+        if (\Auth::user()->can('create constant category')) {
+
+            $validator = \Validator::make(
+                $request->all(), [
+                    'name' => 'required|max:200',
+                    'type' => 'required',
+                    'color' => 'required',
+                ]
+            );
+            if ($validator->fails()) {
+                $messages = $validator->getMessageBag();
+
+                return redirect()->back()->with('error', $messages->first());
+            }
+
+            $category = new ProductServiceCategory();
+            $category->name = $request->name;
+            $category->color = $request->color;
+            $category->type = $request->type;
+            $category->chart_account_id = !empty($request->chart_account) ? $request->chart_account : 0;
+            $category->created_by = \Auth::user()->creatorId();
+            $category->save();
+
+            return redirect()->route('invoice.index')->with('success', __('Category successfully created.'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
+
     public function store(Request $request)
     {
 
