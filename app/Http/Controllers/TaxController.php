@@ -107,7 +107,7 @@ class TaxController extends Controller
             $tax->created_by = \Auth::user()->creatorId();
             $tax->save();
 
-            return redirect()->route('invoice.index')->with('success', __('Tax rate successfully created.'));
+            return redirect()->route('invoice.create', 0)->with('success', __('Tax rate successfully created.'));
         }
         else
         {

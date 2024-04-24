@@ -22,8 +22,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('sku', __('SKU'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::text('sku', '', array('class' => 'form-control','required'=>'required')) }}
+                {{ Form::label('sku', __('SKU'),['class'=>'form-label']) }}<span class="text-danger"></span>
+                {{ Form::text('sku', '', array('class' => 'form-control')) }}
             </div>
         </div>
 
@@ -48,8 +48,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('purchase_price', __('Purchase Price'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::number('purchase_price', '', array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+                {{ Form::label('purchase_price', __('Purchase Price'),['class'=>'form-label']) }}<span class="text-danger"></span>
+                {{ Form::number('purchase_price', '', array('class' => 'form-control','step'=>'0.01')) }}
             </div>
         </div>
         <div class="form-group col-md-6">
@@ -92,14 +92,14 @@
         </div>
         
         <div class="form-group col-md-6">
-            {{ Form::label('unit_id', __('Unit'),['class'=>'form-label']) }}<span class="text-danger">*</span>
+            {{ Form::label('unit_id', __('Unit'),['class'=>'form-label']) }}<span class="text-danger"></span>
             @can('create constant unit')
                     <a href="#" data-url="{{ route('invoice.create_product_unit') }}" data-ajax-popup="true" data-title="{{__('Create New Unit')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
                         <i class="ti ti-plus"></i>
                     </a>
             @endcan
         
-                {{ Form::select('unit_id', $unit,null, array('class' => 'form-control select','required'=>'required')) }}
+                {{ Form::select('unit_id', $unit,null, array('class' => 'form-control select')) }}
         
         </div>
 

@@ -98,7 +98,7 @@ class ProductServiceUnitController extends Controller
             $category->created_by = \Auth::user()->creatorId();
             $category->save();
 
-            return redirect()->route('invoice.index')->with('success', __('Unit successfully created.'));
+            return redirect()->route('invoice.create', 0)->with('success', __('Unit successfully created.'));
         }
         else
         {

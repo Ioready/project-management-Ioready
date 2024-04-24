@@ -155,7 +155,7 @@ class CustomerController extends Controller
             }
 
 
-            return redirect()->route('invoice.index')->with('success', __('Customer successfully created.'));
+            return redirect()->route('invoice.create', 0)->with('success', __('Customer successfully created.'));
         }
         else
         {

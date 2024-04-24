@@ -87,7 +87,7 @@ class ProductServiceCategoryController extends Controller
             $category->created_by = \Auth::user()->creatorId();
             $category->save();
 
-            return redirect()->route('invoice.index')->with('success', __('Category successfully created.'));
+            return redirect()->route('invoice.create', 0)->with('success', __('Category successfully created.'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
