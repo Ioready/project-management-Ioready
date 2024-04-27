@@ -22,8 +22,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('sku', __('SKU'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::text('sku', null, array('class' => 'form-control','required'=>'required')) }}
+                {{ Form::label('sku', __('SKU'),['class'=>'form-label']) }}<span class="text-danger"></span>
+                {{ Form::text('sku', null, array('class' => 'form-control')) }}
             </div>
         </div>
 
@@ -49,8 +49,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('purchase_price', __('Purchase Price'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::number('purchase_price', null, array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+                {{ Form::label('purchase_price', __('Purchase Price'),['class'=>'form-label']) }}<span class="text-danger"></span>
+                {{ Form::number('purchase_price', null, array('class' => 'form-control','step'=>'0.01')) }}
             </div>
         </div>
         <div class="form-group col-md-6">
@@ -116,7 +116,7 @@
 
         <div class="form-group col-md-6 quantity {{$productService->type=='service' ? 'd-none':''}}">
             {{ Form::label('quantity', __('Quantity'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::text('quantity',null, array('class' => 'form-control','required'=>'required')) }}
+            {{ Form::text('quantity',null, array('class' => 'form-control')) }}
         </div>
         <div class="form-group  col-md-12">
             {{ Form::label('description', __('Description'),['class'=>'form-label']) }}
@@ -139,14 +139,11 @@
     <input type="submit" value="{{__('Update')}}" class="btn  btn-primary">
 </div>
 {{Form::close()}}
-<script>
+<!-- <script>
     document.getElementById('pro_image').onchange = function () {
         var src = URL.createObjectURL(this.files[0])
         document.getElementById('image').src = src
     }
-
-    //hide & show quantity
-
     $(document).on('click', '.type', function ()
     {
         var type = $(this).val();
@@ -158,5 +155,47 @@
             $('.quantity').removeClass('d-block');
         }
     });
+</script> -->
+
+<script>
+    document.getElementById('pro_image').onchange = function () {
+        var src = URL.createObjectURL(this.files[0])
+        document.getElementById('image').src = src
+    }
+
+    //hide & show quantity
+
+    $(document).on('click', '.type', function () {
+    var type = $(this).val();
+    if (type == 'product') {
+        $('.quantity').removeClass('d-none');
+        $('.quantity').addClass('d-block');
+    } else {
+        $('.quantity').addClass('d-none');
+        $('.quantity').removeClass('d-block');
+    }
+});
+
+
+$(document).ready(function() {
+    $('#myForm').submit(function(event) {
+        event.preventDefault();
+        var type = $('.type:checked').val();
+        var quantity = $('.quantity input[name="quantity"]').val();
+        if (type === 'product') {
+           
+            if (quantity.trim() === '') {
+                alert('Please enter quantity for the product.');
+                return false;
+            }
+        }
+        this.submit();
+    });
+
+    $(document).on('click', '.type', function () {
+     
+    });
+});
+
 </script>
 

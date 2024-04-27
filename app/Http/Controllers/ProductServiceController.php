@@ -111,15 +111,16 @@ class ProductServiceController extends Controller
 
             $rules = [
                 'name' => 'required',
-                'sku' => ['required', Rule::unique('product_services')->where(function ($query) {
-                   return $query->where('created_by', \Auth::user()->id);
-                 })
-                ],
+                // 'sku' => ['required', Rule::unique('product_services')->where(function ($query) {
+                //    return $query->where('created_by', \Auth::user()->id);
+                //  })
+                // ],
                 'sale_price' => 'required|numeric',
-                'purchase_price' => 'required|numeric',
+                // 'purchase_price' => 'required|numeric',
                 'category_id' => 'required',
                 'unit_id' => 'required',
                 'type' => 'required',
+                // 'quantity' => [$request->type == 'product' ? 'required|numeric' : ''],
             ];
 
             $validator = \Validator::make($request->all(), $rules);
@@ -134,11 +135,29 @@ class ProductServiceController extends Controller
             $productService                      = new ProductService();
             $productService->name                = $request->name;
             $productService->description         = $request->description;
-            $productService->sku                 = $request->sku;
+            // $productService->sku                 = $request->sku;
             $productService->sale_price          = $request->sale_price;
-            $productService->purchase_price      = $request->purchase_price;
+            // $productService->purchase_price      = $request->purchase_price;
             $productService->tax_id              = !empty($request->tax_id) ? implode(',', $request->tax_id) : '';
             $productService->unit_id             = $request->unit_id;
+
+            if(!empty($request->sku))
+            {
+                $productService->sku        = $request->sku;
+            }
+            else{
+                $productService->sku   = null;
+            }
+
+            if(!empty($request->purchase_price))
+            {
+                $productService->purchase_price        = $request->purchase_price;
+            }
+            else{
+                $productService->purchase_price   = 0;
+            }
+
+
             if(!empty($request->quantity))
             {
                 $productService->quantity        = $request->quantity;
@@ -246,7 +265,7 @@ class ProductServiceController extends Controller
                 'sale_price' => 'required|numeric',
                 // 'purchase_price' => 'required|numeric',
                 'category_id' => 'required',
-                // 'unit_id' => 'required',
+                'unit_id' => 'required',
                 'type' => 'required',
             ];
 
@@ -266,7 +285,7 @@ class ProductServiceController extends Controller
             $productService->sale_price          = $request->sale_price;
             // $productService->purchase_price      = $request->purchase_price;
             $productService->tax_id              = !empty($request->tax_id) ? implode(',', $request->tax_id) : '';
-            // $productService->unit_id             = $request->unit_id;
+            $productService->unit_id             = $request->unit_id;
 
             if(!empty($request->sku))
             {
@@ -283,15 +302,6 @@ class ProductServiceController extends Controller
             }
             else{
                 $productService->purchase_price   = 0;
-            }
-
-
-            if(!empty($request->unit_id))
-            {
-                $productService->unit_id        = $request->unit_id;
-            }
-            else{
-                $productService->unit_id   = 0;
             }
 
 
@@ -412,9 +422,9 @@ class ProductServiceController extends Controller
             {
                 $rules = [
                     'name' => 'required',
-                    'sku' => 'required', Rule::unique('product_services')->ignore($productService->id),
+                    // 'sku' => 'required', Rule::unique('product_services')->ignore($productService->id),
                     'sale_price' => 'required|numeric',
-                    'purchase_price' => 'required|numeric',
+                    // 'purchase_price' => 'required|numeric',
                     'category_id' => 'required',
                     'unit_id' => 'required',
                     'type' => 'required',
@@ -438,6 +448,23 @@ class ProductServiceController extends Controller
                 $productService->tax_id         = !empty($request->tax_id) ? implode(',', $request->tax_id) : '';
                 $productService->unit_id        = $request->unit_id;
 
+                if(!empty($request->sku))
+            {
+                $productService->sku        = $request->sku;
+            }
+            else{
+                $productService->sku   = null;
+            }
+
+
+            if(!empty($request->purchase_price))
+            {
+                $productService->purchase_price        = $request->purchase_price;
+            }
+            else{
+                $productService->purchase_price   = 0;
+            }
+            
                 if(!empty($request->quantity))
                 {
                     $productService->quantity   = $request->quantity;

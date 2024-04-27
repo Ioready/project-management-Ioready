@@ -172,15 +172,36 @@
 
     //hide & show quantity
 
-    $(document).on('click', '.type', function ()
-    {
-        var type = $(this).val();
-        if (type == 'product') {
-            $('.quantity').removeClass('d-none')
-            $('.quantity').addClass('d-block');
-        } else {
-            $('.quantity').addClass('d-none')
-            $('.quantity').removeClass('d-block');
+    $(document).on('click', '.type', function () {
+    var type = $(this).val();
+    if (type == 'product') {
+        $('.quantity').removeClass('d-none');
+        $('.quantity').addClass('d-block');
+    } else {
+        $('.quantity').addClass('d-none');
+        $('.quantity').removeClass('d-block');
+    }
+});
+
+
+$(document).ready(function() {
+    $('#myForm').submit(function(event) {
+        event.preventDefault();
+        var type = $('.type:checked').val();
+        var quantity = $('.quantity input[name="quantity"]').val();
+        if (type === 'product') {
+           
+            if (quantity.trim() === '') {
+                alert('Please enter quantity for the product.');
+                return false;
+            }
         }
+        this.submit();
     });
+
+    $(document).on('click', '.type', function () {
+     
+    });
+});
+
 </script>

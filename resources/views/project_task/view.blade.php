@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div class="attachments" id="attachments">
-                <form id="add_file" class="collapse pb-2">
+                <form id="add_file" class="collapse pb-2" data-action="{{ route('comment.store.file',[$task->project_id,$task->id]) }}">
                     <div class="card border shadow-none">
                         <div class="px-3 py-2 row align-items-center">
                             @csrf
@@ -124,7 +124,7 @@
                             </div>
                             <div class="col-2 card-meta d-inline-flex align-items-center">
                                 <button class="btn btn-sm btn-primary" type="button" id="file_attachment_submit"
-                                        data-action="{{ route('comment.store.file',[$task->project_id,$task->id]) }}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+                                         data-bs-toggle="tooltip" title="{{__('Create')}}">
                                     <i class="ti ti-check"></i>
                                 </button>
                             </div>

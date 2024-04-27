@@ -239,15 +239,26 @@
 
             /*For Task Attachment*/
             $(document).on('click', '#file_attachment_submit', function () {
-                var file_data = $("#task_attachment").prop("files")[0];
-                if (file_data != '' && file_data != undefined) {
+                // var task_attachment = $("#add_file input[name=task_attachment]").val();
+                // var file_data = $("#task_attachment").prop("files")[0];
+            
+                var fileInput = $("#add_file input[name=task_attachment]");
+                var fileName = fileInput.val().split('\\').pop(); // Get the file name from the input field and remove the path
+                // var urlPath = <?php url(); ?>"/storage/uploads/"; // Your URL path here
+                var task_attachment =fileName;
+                
+                if (task_attachment != '' && task_attachment != undefined) {
                     var formData = new FormData();
-                    formData.append('file', file_data);
+                    formData.append('file', task_attachment);
                     formData.append('_token', "{{ csrf_token() }}");
                     $.ajax({
-                        url: $("#file_attachment_submit").data('action'),
-                        type: 'POST',
+                        // url: $("#file_attachment_submit").data('action'),
+                        // type: 'POST',
+                        // data: formData,
+                        url: $("#add_file").data('action'),
                         data: formData,
+                        // data: {task_attachment: task_attachment, "_token": "{{ csrf_token() }}"},
+                        type: 'POST',
                         cache: false,
                         processData: false,
                         contentType: false,

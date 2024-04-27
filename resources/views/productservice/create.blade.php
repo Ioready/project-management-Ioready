@@ -1,4 +1,6 @@
-{{ Form::open(array('url' => 'productservice','enctype' => "multipart/form-data")) }}
+<!-- {{ Form::open(array('url' => 'productservice','enctype' => "multipart/form-data")) }} -->
+{{ Form::open(array('url' => 'productservice', 'enctype' => 'multipart/form-data', 'id' => 'myForm')) }}
+
 <div class="modal-body">
     {{-- start for ai module--}}
     @php
@@ -22,8 +24,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('sku', __('SKU'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::text('sku', '', array('class' => 'form-control','required'=>'required')) }}
+                {{ Form::label('sku', __('SKU'),['class'=>'form-label']) }}<span class="text-danger"></span>
+                {{ Form::text('sku', '', array('class' => 'form-control')) }}
             </div>
         </div>
 
@@ -48,8 +50,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('purchase_price', __('Purchase Price'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::number('purchase_price', '', array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+                {{ Form::label('purchase_price', __('Purchase Price'),['class'=>'form-label']) }}<span class="text-danger"></span>
+                {{ Form::number('purchase_price', '', array('class' => 'form-control','step'=>'0.01')) }}
             </div>
         </div>
         <div class="form-group col-md-6">
@@ -119,7 +121,7 @@
 
         <div class="form-group col-md-6 quantity">
             {{ Form::label('quantity', __('Quantity'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::text('quantity',null, array('class' => 'form-control' ,'required'=>'required')) }}
+            {{ Form::number('quantity',null, array('class' => 'form-control', 'min'=>'1')) }}
         </div>
 
         <div class="form-group col-md-12">
@@ -151,15 +153,36 @@
 
     //hide & show quantity
 
-    $(document).on('click', '.type', function ()
-    {
-        var type = $(this).val();
-        if (type == 'product') {
-            $('.quantity').removeClass('d-none')
-            $('.quantity').addClass('d-block');
-        } else {
-            $('.quantity').addClass('d-none')
-            $('.quantity').removeClass('d-block');
+    $(document).on('click', '.type', function () {
+    var type = $(this).val();
+    if (type == 'product') {
+        $('.quantity').removeClass('d-none');
+        $('.quantity').addClass('d-block');
+    } else {
+        $('.quantity').addClass('d-none');
+        $('.quantity').removeClass('d-block');
+    }
+});
+
+
+$(document).ready(function() {
+    $('#myForm').submit(function(event) {
+        event.preventDefault();
+        var type = $('.type:checked').val();
+        var quantity = $('.quantity input[name="quantity"]').val();
+        if (type === 'product') {
+           
+            if (quantity.trim() === '') {
+                alert('Please enter quantity for the product.');
+                return false;
+            }
         }
+        this.submit();
     });
+
+    $(document).on('click', '.type', function () {
+     
+    });
+});
+
 </script>
