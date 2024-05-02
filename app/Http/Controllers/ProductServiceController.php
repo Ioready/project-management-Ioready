@@ -252,7 +252,7 @@ class ProductServiceController extends Controller
     public function productStore(Request $request)
     {
 
-       
+
         if(\Auth::user()->can('create product & service'))
         {
 
@@ -267,6 +267,7 @@ class ProductServiceController extends Controller
                 'category_id' => 'required',
                 'unit_id' => 'required',
                 'type' => 'required',
+                // 'quantity' => [$request->type == 'product' ? 'required|numeric' : ''],
             ];
 
             $validator = \Validator::make($request->all(), $rules);
@@ -294,7 +295,6 @@ class ProductServiceController extends Controller
             else{
                 $productService->sku   = null;
             }
-
 
             if(!empty($request->purchase_price))
             {

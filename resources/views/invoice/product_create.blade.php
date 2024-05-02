@@ -1,4 +1,6 @@
-{{ Form::open(array('route' => 'invoice.product_service_store','enctype' => "multipart/form-data")) }}
+<!-- {{ Form::open(array('url' => 'productservice','enctype' => "multipart/form-data")) }} -->
+{{ Form::open(array('route' => 'invoice.product_service_store', 'enctype' => 'multipart/form-data', 'id' => 'myForm')) }}
+
 <div class="modal-body">
     {{-- start for ai module--}}
     @php
@@ -68,41 +70,20 @@
 
         <div class="form-group col-md-6">
             {{ Form::label('tax_id', __('Tax'),['class'=>'form-label']) }}
-            @can('create constant tax')
-            <a href="#" data-url="{{ route('invoice.create_tax') }}" data-ajax-popup="true" data-title="{{__('Create Tax Rate')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
-                <i class="ti ti-plus"></i>
-            </a>
-        @endcan
-
-           
             {{ Form::select('tax_id[]', $tax,null, array('class' => 'form-control select2','id'=>'choices-multiple1','multiple')) }}
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            @can('create constant category')
-                                            <a href="#" data-url="{{ route('invoice.create_category') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" title="{{__('Create')}}" data-title="{{__('Create New Category')}}"  class="btn btn-sm btn-primary">
-                                                <i class="ti ti-plus"></i>
-                                            </a>
-                                        @endcan
             {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
 
             <div class=" text-xs">
                 {{__('Please add constant category. ')}}<a href="{{route('product-category.index')}}"><b>{{__('Add Category')}}</b></a>
             </div>
         </div>
-        
         <div class="form-group col-md-6">
-            {{ Form::label('unit_id', __('Unit'),['class'=>'form-label']) }}<span class="text-danger"></span>
-            @can('create constant unit')
-                    <a href="#" data-url="{{ route('invoice.create_product_unit') }}" data-ajax-popup="true" data-title="{{__('Create New Unit')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
-                        <i class="ti ti-plus"></i>
-                    </a>
-            @endcan
-        
-                {{ Form::select('unit_id', $unit,null, array('class' => 'form-control select')) }}
-        
+            {{ Form::label('unit_id', __('Unit'),['class'=>'form-label']) }}<span class="text-danger">*</span>
+            {{ Form::select('unit_id', $unit,null, array('class' => 'form-control select','required'=>'required')) }}
         </div>
-
         <div class="col-md-6 form-group">
             {{Form::label('pro_image',__('Product Image'),['class'=>'form-label'])}}
             <div class="choose-file ">
@@ -140,7 +121,7 @@
 
         <div class="form-group col-md-6 quantity">
             {{ Form::label('quantity', __('Quantity'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::text('quantity',null, array('class' => 'form-control' ,'required'=>'required')) }}
+            {{ Form::number('quantity',null, array('class' => 'form-control', 'min'=>'1')) }}
         </div>
 
         <div class="form-group col-md-12">
