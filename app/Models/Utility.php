@@ -81,6 +81,7 @@ class Utility extends Model
             "site_currency" => "USD",
             "site_currency_symbol" => "$",
             "site_currency_symbol_position" => "pre",
+            'site_salary_currency_symbol_position'=>"pre",
             "site_date_format" => "M j, Y",
             "site_time_format" => "g:i A",
             "timezone" => '',
@@ -264,6 +265,9 @@ class Utility extends Model
             'decimal_separator'=>'dot',
             'thousand_separator'=>'dot',
             'currency_symbol' => 'withcurrencysymbol',
+            'salary_currency_symbol' => 'withsalarycurrencysymbol',
+            'salary_currency_space'=>'salarywithspace',
+            'site_salary_currency'=>'site_salary_currency',
         ];
 
         foreach ($data as $row) {
@@ -291,6 +295,7 @@ class Utility extends Model
             "site_currency" => "USD",
             "site_currency_symbol" => "$",
             "site_currency_symbol_position" => "pre",
+            "site_salary_currency_symbol_position" => "pre",
             "site_date_format" => "M j, Y",
             "site_time_format" => "g:i A",
             "company_name" => "",

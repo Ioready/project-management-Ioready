@@ -382,6 +382,19 @@
             });
         });
     </script>
+    <script>
+        $(document).on('keyup change', '.Salary_currency_setting', function() {
+            var data = $('#Salary_currency_setting').serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('salary.currency.preview') }}',
+                data: data,
+                success: function(price) {
+                    $('.previewsalary').text(price);
+                }
+            });
+        });
+    </script>
 @endpush
 @section('content')
     <div class="row">
@@ -406,6 +419,11 @@
                                 class="list-group-item list-group-item-action border-0">{{ __('Currency Settings') }}
                                 <div class="float-end"><i class="ti ti-chevron-right"></i></div>
                             </a>
+                            <a href="#salary-currency-settings"
+                                class="list-group-item list-group-item-action border-0">{{ __('Salary Currency Settings') }}
+                                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                            </a>
+                            
                             <a href="#email-settings"
                                 class="list-group-item list-group-item-action border-0">{{ __('Email Settings') }}
                                 <div class="float-end"><i class="ti ti-chevron-right"></i></div>
@@ -1284,6 +1302,156 @@
                         </div>
                         {{ Form::close() }}
                     </div>
+
+                    <!--Currency Settings-->
+                    <div id="salary-currency-settings" class="card">
+                        <div class="card-header">
+                            <h5>{{ __('Salary Currency Settings') }}</h5>
+                            <small class="text-muted">{{ __('Edit your salary currency details') }}</small>
+                        </div>
+                        {{ Form::model($setting, ['route' => 'salary.currency.settings', 'method' => 'post', 'id' => 'Salary_currency_setting']) }}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    {{ Form::label('site_salary_currency', __('Currency *'), ['class' => 'form-label']) }}
+                                    {{ Form::text('site_salary_currency', $setting['site_salary_currency'], ['class' => 'form-control font-style salary_currency_preview', 'required', 'placeholder' => __('Enter Currency')]) }}
+                                    <small> {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
+                                        <a href="https://stripe.com/docs/currencies"
+                                            target="_blank">{{ __('You can find out how to do that here.') }}</a></small>
+                                    <br>
+                                    @error('site_salary_currency')
+                                        <span class="invalid-site_currency" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{ Form::label('site_salary_currency_symbol', __('Salary Currency Symbol *'), ['class' => 'form-label']) }}
+                                    {{ Form::text('site_salary_currency_symbol', null, ['class' => 'form-control salary_currency_preview']) }}
+                                    @error('site_salary_currency_symbol')
+                                        <span class="invalid-site_salary_currency_symbol" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-4">
+                                    {{ Form::label('decimal_number', __('Decimal Number Format'), ['class' => 'form-label']) }}
+                                    {{ Form::number('decimal_number', null, ['class' => 'form-control currency_preview']) }}
+                                    @error('decimal_number')
+                                        <span class="invalid-decimal_number" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="decimal_separator"
+                                        class="form-label">{{ __('Decimal Separator') }}</label>
+                                    <select type="text" name="decimal_separator"
+                                        class="form-control selectric currency_preview" id="decimal_separator">
+                                        <option value="dot"
+                                            @if (@$setting['decimal_separator'] == 'dot') selected="selected" @endif>
+                                            {{ __('Dot') }}</option>
+                                        <option value="comma"
+                                            @if (@$setting['decimal_separator'] == 'comma') selected="selected" @endif>
+                                            {{ __('Comma') }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="thousand_separator"
+                                        class="form-label">{{ __('Thousands Separator') }}</label>
+                                    <select type="text" name="thousand_separator"
+                                        class="form-control selectric currency_preview" id="thousand_separator">
+                                        <option value="dot"
+                                            @if (@$setting['thousand_separator'] == 'dot') selected="selected" @endif>
+                                            {{ __('Dot') }}</option>
+                                        <option value="comma"
+                                            @if (@$setting['thousand_separator'] == 'comma') selected="selected" @endif>
+                                            {{ __('Comma') }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="form-label"
+                                        for="example3cols3Input">{{ __('Currency Symbol Position') }}</label>
+                                    <div class="row ms-1">
+                                        <div class="form-check col-md-6">
+                                            <input class="form-check-input currency_preview" type="radio"
+                                                name="site_salary_currency_symbol_position" value="pre"
+                                                @if (@$setting['site_salary_currency_symbol_position'] == 'pre') checked @endif id="flexCheckDefault">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                {{ __('Pre') }}
+                                            </label>
+                                        </div>
+                                        <div class="form-check col-md-6">
+                                            <input class="form-check-input currency_preview" type="radio"
+                                                name="site_salary_currency_symbol_position" value="post"
+                                                @if (@$setting['site_salary_currency_symbol_position'] == 'post') checked @endif id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                                {{ __('Post') }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{ Form::label('currency_space', __('Currency Symbol Space'), ['class' => 'form-label']) }}
+                                    <div class="row ms-1">
+                                        <div class="form-check col-md-6">
+                                            <input class="form-check-input currency_preview" type="radio"
+                                                name="salary_currency_space" value="salarywithspace"
+                                                @if (@$setting['salary_currency_space'] == 'salarywithspace') checked @endif id="withspace">
+                                            <label class="form-check-label" for="salarywithspace">
+                                                {{ __('With space') }}
+                                            </label>
+                                        </div>
+                                        <div class="form-check col-md-6">
+                                            <input class="form-check-input currency_preview" type="radio"
+                                                name="salary_currency_space" value="salarywithoutspace"
+                                                @if (@$setting['salary_currency_space'] == 'salarywithoutspace') checked @endif id="withoutspace">
+                                            <label class="form-check-label" for="salarywithoutspace">
+                                                {{ __('Without space') }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{ Form::label('salary_currency_symbol', __('Currency Symbol & Name'), ['class' => 'form-label']) }}
+                                    <div class="row ms-1">
+                                        <div class="form-check col-md-6">
+                                            <input class="form-check-input currency_preview" type="radio"
+                                                name="salary_currency_symbol" value="withsalarycurrencysymbol"
+                                                @if (@$setting['salary_currency_symbol'] == 'withsalarycurrencysymbol') checked @endif id="withsalarycurrencysymbol">
+                                            <label class="form-check-label" for="withsalarycurrencysymbol">
+                                                {{ __('With Salary Currency Symbol') }}
+                                            </label>
+                                        </div>
+                                        <div class="form-check col-md-6">
+                                            <input class="form-check-input currency_preview" type="radio"
+                                                name="salary_currency_name" value="withsalarycurrencyname"
+                                                @if (@$setting['salary_currency_name'] == 'withsalarycurrencyname') checked @endif id="withsalarycurrencyname">
+                                            <label class="form-check-label" for="withsalarycurrencyname">
+                                                {{ __('With Salary Currency Name') }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{ Form::label('previewsalary', __('previewsalary : '), ['class' => 'form-label']) }}
+                                    <div class="row">
+                                        <div class="col-md-6 previewsalary">
+                                            {{ __('$ 10.000,00') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <div class="form-group">
+                                <input class="btn btn-print-invoice btn-primary m-r-10" type="submit"
+                                    value="{{ __('Save Changes') }}">
+                            </div>
+                        </div>
+                        {{ Form::close() }}
+                    </div>
+
 
                     <!--Email Settings-->
                     <div id="email-settings" class="card">

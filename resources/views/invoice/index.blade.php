@@ -27,6 +27,11 @@
 
 @section('action-btn')
     <div class="float-end">
+
+    <a href="#" data-size="lg" data-url="{{ route('invoice.create_currency') }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="{{__('Create New Product & Service')}}" class="btn btn-sm btn-primary">
+          <i class="ti ti-plus">add currency</i>
+     </a>
+
     <a href="#" data-size="lg" data-url="{{ route('invoice.create_product_service') }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="{{__('Create New Product & Service')}}" class="btn btn-sm btn-primary">
           <i class="ti ti-plus">add items</i>
      </a>

@@ -2295,8 +2295,35 @@ class SystemController extends Controller
 
         return redirect()->back()->with('success', __('Setting successfully updated.'));    
     }
+    public function saveSalaryCurrencySettings(Request $request)
+    {
+        $user = \Auth::user();
+
+        $post = $request->all();
+
+        unset($post['_token']);
+
+        $settings = Utility::settings();
+
+        foreach ($post as $key => $data) {
+            if (in_array($key, array_keys($settings))) {
+                \DB::insert(
+                    'insert into settings (`value`, `name`,`created_by`,`created_at`,`updated_at`) values (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ', [
+                        $data,
+                        $key,
+                        \Auth::user()->creatorId(),
+                        date('Y-m-d H:i:s'),
+                        date('Y-m-d H:i:s'),
+                    ]
+                );
+            }
+        }
+
+        return redirect()->back()->with('success', __('Setting successfully updated.'));    
+    }
 
 
+    
     public function currencyPreview(Request $request)
     {
         $decimal_separator = $request->decimal_separator == 'dot' ? ',' : ',';
@@ -2309,5 +2336,75 @@ class SystemController extends Controller
         $price =  (($request->site_currency_symbol_position == "pre") ? $currency : '') . ($currency_space == 'withspace' ? ' ' : '') . number_format(10000, $decimal_number , $decimal_separator, $thousand_separator) . ($currency_space == 'withspace' ? ' ' : '') . (($request->site_currency_symbol_position == "post") ? $currency : '');
 
         return $price;
+    }
+
+    public function currencySalaryPreview(Request $request)
+    {
+        $decimal_separator = $request->decimal_separator == 'dot' ? ',' : ',';
+        $thousand_separator = $request->thousand_separator == 'dot' ? '.' : ',';
+
+        $currency = $request->currency_symbol == 'withcurrencysymbol' ? $request->site_salary_currency_symbol : $request->site_salary_currency;
+        $decimal_number = $request->decimal_number;
+        $currency_space = $request->currency_space;
+
+        $price =  (($request->site_salary_currency_symbol_position == "pre") ? $currency : '') . ($currency_space == 'withspace' ? ' ' : '') . number_format(10000, $decimal_number , $decimal_separator, $thousand_separator) . ($currency_space == 'withspace' ? ' ' : '') . (($request->site_salary_currency_symbol_position == "post") ? $currency : '');
+
+        return $price;
+    }
+
+
+
+    public function saveInvoiceCurrencySettings(Request $request)
+    {
+        $user = \Auth::user();
+
+        $post = $request->all();
+
+        unset($post['_token']);
+
+        $settings = Utility::settings();
+
+        foreach ($post as $key => $data) {
+            if (in_array($key, array_keys($settings))) {
+                \DB::insert(
+                    'insert into settings (`value`, `name`,`created_by`,`created_at`,`updated_at`) values (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ', [
+                        $data,
+                        $key,
+                        \Auth::user()->creatorId(),
+                        date('Y-m-d H:i:s'),
+                        date('Y-m-d H:i:s'),
+                    ]
+                );
+            }
+        }
+
+        return redirect()->back()->with('success', __('Setting successfully updated.'));    
+    }
+
+    public function invoiceCurrency()
+    {
+        
+
+        if (\Auth::user()->can('manage company settings')) {
+
+
+            $setting = Utility::settingsById(\Auth::user()->creatorId());
+
+            $timezones = config('timezones');
+            $company_payment_setting = Utility::getCompanyPaymentSetting(\Auth::user()->creatorId());
+            // $emailSetting = Utility::settingsById(\Auth::user()->creatorId());
+
+
+            $EmailTemplates = EmailTemplate::all();
+            $ips = IpRestrict::where('created_by', \Auth::user()->creatorId())->get();
+            // $languages = Utility::languages();
+
+          
+            return view('invoice.invoice_currency', compact('setting', 'company_payment_setting', 'timezones',
+                'ips', 'EmailTemplates'));
+        } else {
+            return redirect()->back()->with('error', 'Permission denied.');
+        }
+
     }
 }

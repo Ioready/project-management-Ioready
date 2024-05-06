@@ -292,6 +292,7 @@
                             // var tr = '<tr><td class="dataTables-empty" colspan="' + colspan +
                             //     '">{{ __('No entries found') }}</td></tr>';
                         }
+                        
 
                         $('#pc-dt-render-column-cells tbody').html(tr);
                         // var table = document.querySelector("#pc-dt-render-column-cells");

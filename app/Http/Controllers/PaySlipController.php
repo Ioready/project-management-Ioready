@@ -236,8 +236,9 @@ class PaySlipController extends Controller
                         $tmp[] = $employee->name;
                         $tmp[] = $employee->payroll_type;
                         $tmp[] = $employee->pay_slip_id;
-                        $tmp[] = !empty($employee->basic_salary) ? \Auth::user()->priceFormat($employee->basic_salary) : '-';
-                        $tmp[] = !empty($employee->net_payble) ? \Auth::user()->priceFormat($employee->net_payble) : '-';
+                        $tmp[] = !empty($employee->basic_salary) ? \Auth::user()->salaryPriceFormat($employee->basic_salary) : '-';
+                        $tmp[] = !empty($employee->net_payble) ? \Auth::user()->salaryPriceFormat($employee->net_payble) : '-';
+                        
                         if ($employee->status == 1) {
                             $tmp[] = 'paid';
                         } else {
@@ -254,8 +255,9 @@ class PaySlipController extends Controller
                     $tmp[] = \Auth::user()->employeeIdFormat($employee->employee_id);
                     $tmp[] = $employee->name;
                     $tmp[] = $employee->payroll_type;
-                    $tmp[] = !empty($employee->basic_salary) ? \Auth::user()->priceFormat($employee->basic_salary) : '-';
-                    $tmp[] = !empty($employee->net_payble) ? \Auth::user()->priceFormat($employee->net_payble) : '-';
+                    $tmp[] = !empty($employee->basic_salary) ? \Auth::user()->salaryPriceFormat($employee->basic_salary) : '-';
+                    $tmp[] = !empty($employee->net_payble) ? \Auth::user()->salaryPriceFormat($employee->net_payble) : '-';
+                    
                     if ($employee->status == 1) {
                         $tmp[] = 'Paid';
                     } else {
@@ -266,7 +268,7 @@ class PaySlipController extends Controller
                     $data[] = $tmp;
                 }
             }
-
+           
             return $data;
         }
     }

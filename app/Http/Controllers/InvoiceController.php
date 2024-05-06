@@ -1003,7 +1003,10 @@ class InvoiceController extends Controller
 
     public function invoice($invoice_id)
     {
+        $user_id = \Auth::user()->id;
         $settings = Utility::settings();
+        $getCompanyPaymentSetting = Utility::getCompanyPaymentSetting($user_id);
+
 
         $invoiceId = Crypt::decrypt($invoice_id);
         $invoice = Invoice::where('id', $invoiceId)->first();
@@ -1091,7 +1094,7 @@ class InvoiceController extends Controller
             $color = '#' . $settings['invoice_color'];
             $font_color = Utility::getFontColor($color);
 
-            return view('invoice.templates.' . $settings['invoice_template'], compact('invoice', 'color', 'settings', 'customer', 'img', 'font_color', 'customFields'));
+            return view('invoice.templates.' . $settings['invoice_template'], compact('invoice', 'color', 'settings', 'customer', 'img', 'font_color', 'customFields','getCompanyPaymentSetting'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }

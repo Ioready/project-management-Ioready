@@ -57,7 +57,7 @@
                                         <td>{{__('Basic Salary')}}</td>
                                         <td>-</td>
                                         <td>-</td>
-                                        <td class="text-end">{{  \Auth::user()->priceFormat( $payslip->basic_salary)}}</td>
+                                        <td class="text-end">{{  \Auth::user()->salaryPriceFormat( $payslip->basic_salary)}}</td>
                                     </tr>
                                     @foreach ($payslipDetail['earning']['allowance'] as $allowance)
                                         @php
@@ -70,11 +70,16 @@
                                                 <td>{{ $all->title }}</td>
                                                 <td>{{ ucfirst($all->type) }}</td>
                                                 @if ($all->type != 'percentage')
-                                                    <td class="text-end">
-                                                        {{ \Auth::user()->priceFormat($all->amount) }}</td>
-                                                @else
-                                                    <td class="text-end">{{ $all->amount }}%
+                                                    <!-- <td class="text-end">
+                                                        {{ \Auth::user()->priceFormat($all->amount) }}</td> -->
+                                                        <td class="text-end">
+                                                        {{ \Auth::user()->salaryPriceFormat($all->amount) }}</td>
+                                                @else 
+                                                    <!-- <td class="text-end">{{ $all->amount }}%
                                                         ({{ \Auth::user()->priceFormat(($all->amount * $payslip->basic_salary) / 100) }})
+                                                    </td> -->
+                                                    <td class="text-end">{{ $all->amount }}%
+                                                        ({{ \Auth::user()->salaryPriceFormat(($all->amount * $payslip->basic_salary) / 100) }})
                                                     </td>
                                                 @endif
                                             </tr>
@@ -92,11 +97,16 @@
                                                 <td>{{ $empcom->title }}</td>
                                                 <td>{{ ucfirst($empcom->type) }}</td>
                                                 @if ($empcom->type != 'percentage')
-                                                    <td class="text-end">
-                                                        {{ \Auth::user()->priceFormat($empcom->amount) }}</td>
-                                                @else
-                                                    <td class="text-end">{{ $empcom->amount }}%
+                                                    <!-- <td class="text-end">
+                                                        {{ \Auth::user()->priceFormat($empcom->amount) }}</td> -->
+                                                        <td class="text-end">
+                                                        {{ \Auth::user()->salaryPriceFormat($empcom->amount) }}</td>
+                                                @else 
+                                                    <!-- <td class="text-end">{{ $empcom->amount }}%
                                                         ({{ \Auth::user()->priceFormat(($empcom->amount * $payslip->basic_salary) / 100) }})
+                                                    </td> -->
+                                                    <td class="text-end">{{ $empcom->amount }}%
+                                                        ({{ \Auth::user()->salaryPriceFormat(($empcom->amount * $payslip->basic_salary) / 100) }})
                                                     </td>
                                                 @endif
                                             </tr>
@@ -113,11 +123,16 @@
                                                 <td>{{ $op->title }}</td>
                                                 <td>{{ ucfirst($op->type) }}</td>
                                                 @if ($op->type != 'percentage')
-                                                    <td class="text-end">
-                                                        {{ \Auth::user()->priceFormat($op->amount) }}</td>
-                                                @else
-                                                    <td class="text-end">{{ $op->amount }}%
+                                                    <!-- <td class="text-end">
+                                                        {{ \Auth::user()->priceFormat($op->amount) }}</td> -->
+                                                        <td class="text-end">
+                                                        {{ \Auth::user()->salaryPriceFormat($op->amount) }}</td>
+                                                @else 
+                                                    <!-- <td class="text-end">{{ $op->amount }}%
                                                         ({{ \Auth::user()->priceFormat(($op->amount * $payslip->basic_salary) / 100) }})
+                                                    </td> -->
+                                                    <td class="text-end">{{ $op->amount }}%
+                                                        ({{ \Auth::user()->salaryPriceFormat(($op->amount * $payslip->basic_salary) / 100) }})
                                                     </td>
                                                 @endif
                                             </tr>
@@ -139,7 +154,8 @@
                                                 <td>{{ $overtime->title }}</td>
                                                 <td>-</td>
                                                 <td class="text-end">
-                                                    {{ \Auth::user()->priceFormat($overtime->number_of_days * $overtime->hours * $overtime->rate) }}
+                                                    <!-- {{ \Auth::user()->priceFormat($overtime->number_of_days * $overtime->hours * $overtime->rate) }} -->
+                                                    {{ \Auth::user()->salaryPriceFormat($overtime->number_of_days * $overtime->hours * $overtime->rate) }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -173,11 +189,15 @@
                                                 <td>{{ $emploanss->title }}</td>
                                                 <td>{{ ucfirst($emploanss->type) }}</td>
                                                 @if ($emploanss->type != 'percentage')
-                                                    <td class="text-end">
-                                                        {{ \Auth::user()->priceFormat($emploanss->amount) }}</td>
+                                                    <!-- <td class="text-end">
+                                                        {{ \Auth::user()->priceFormat($emploanss->amount) }}</td> -->
+                                                        <td class="text-end">
+                                                        {{ \Auth::user()->salaryPriceFormat($emploanss->amount) }}</td>
+                                                        
                                                 @else
                                                     <td class="text-end">{{ $emploanss->amount }}%
-                                                        ({{ \Auth::user()->priceFormat(($emploanss->amount * $payslip->basic_salary) / 100) }})
+                                                        <!-- ({{ \Auth::user()->priceFormat(($emploanss->amount * $payslip->basic_salary) / 100) }}) -->
+                                                        ({{ \Auth::user()->salaryPriceFormat(($emploanss->amount * $payslip->basic_salary) / 100) }})
                                                     </td>
                                                 @endif
                                             </tr>
@@ -196,11 +216,14 @@
                                                 <td>{{ ucfirst($saturationdeduc->type) }}</td>
                                                 @if ($saturationdeduc->type != 'percentage')
                                                     <td class="text-end">
-                                                        {{ \Auth::user()->priceFormat($saturationdeduc->amount) }}
-                                                    </td>
+                                                    
+                                                    {{ \Auth::user()->salaryPriceFormat($saturationdeduc->amount) }}
+                                                        <!-- {{ \Auth::user()->priceFormat($saturationdeduc->amount) }} -->
+                                                    </td> 
                                                 @else
                                                     <td class="text-end">{{ $saturationdeduc->amount }}%
-                                                        ({{ \Auth::user()->priceFormat(($saturationdeduc->amount * $payslip->basic_salary) / 100) }})
+                                                    ({{ \Auth::user()->salaryPriceFormat(($saturationdeduc->amount * $payslip->basic_salary) / 100) }})
+                                                        <!-- ({{ \Auth::user()->priceFormat(($saturationdeduc->amount * $payslip->basic_salary) / 100) }}) -->
                                                     </td>
                                                 @endif
                                             </tr>
@@ -213,21 +236,25 @@
 
                         <div class="row mt-4">
                             <div class="col-lg-8">
-
+                            
                             </div>
                             <div class="col-lg-4 text-end text-sm">
                                 <div class="invoice-detail-item pb-2">
                                     <div class="invoice-detail-name font-bold">{{__('Total Earning')}}</div>
-                                    <div class="invoice-detail-value">{{ \Auth::user()->priceFormat($payslipDetail['totalEarning'])}}</div>
+                                    <div class="invoice-detail-value">{{ \Auth::user()->salaryPriceFormat($payslipDetail['totalEarning'])}}</div>
+                                    <!-- <div class="invoice-detail-value">{{ \Auth::user()->priceFormat($payslipDetail['totalEarning'])}}</div> -->
                                 </div>
                                 <div class="invoice-detail-item">
                                     <div class="invoice-detail-name font-bold">{{__('Total Deduction')}}</div>
-                                    <div class="invoice-detail-value">{{ \Auth::user()->priceFormat($payslipDetail['totalDeduction'])}}</div>
+                                    <div class="invoice-detail-value">{{ \Auth::user()->salaryPriceFormat($payslipDetail['totalDeduction'])}}</div>
+                                    <!-- <div class="invoice-detail-value">{{ \Auth::user()->priceFormat($payslipDetail['totalDeduction'])}}</div> -->
                                 </div>
                                 <hr class="mt-2 mb-2">
                                 <div class="invoice-detail-item">
                                     <div class="invoice-detail-name font-bold">{{__('Net Salary')}}</div>
-                                    <div class="invoice-detail-value invoice-detail-value-lg">{{ \Auth::user()->priceFormat($payslip->net_payble)}}</div>
+                                    
+                                    <div class="invoice-detail-value invoice-detail-value-lg">{{ \Auth::user()->salaryPriceFormat($payslip->net_payble)}}</div>
+                                    <!-- <div class="invoice-detail-value invoice-detail-value-lg">{{ \Auth::user()->priceFormat($payslip->net_payble)}}</div> -->
                                 </div>
                             </div>
                         </div>

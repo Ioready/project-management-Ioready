@@ -360,7 +360,10 @@ Route::group(['middleware' => ['verified']], function () {
             Route::post('business-setting', [SystemController::class, 'saveBusinessSettings'])->name('business.setting');
             Route::post('company-payment-setting', [SystemController::class, 'saveCompanyPaymentSettings'])->name('company.payment.settings');
             Route::post('currency-settings', [SystemController::class, 'saveCurrencySettings'])->name('currency.settings');
+            Route::post('salary-currency-settings', [SystemController::class, 'saveSalaryCurrencySettings'])->name('salary.currency.settings');
             Route::post('company-preview', [SystemController::class, 'currencyPreview'])->name('currency.preview');
+
+            Route::post('company-salary-preview', [SystemController::class, 'currencySalaryPreview'])->name('salary.currency.preview');
 
 
             Route::get('test-mail', [SystemController::class, 'testMail'])->name('test.mail');
@@ -424,6 +427,9 @@ Route::group(['middleware' => ['verified']], function () {
 
     Route::get('invoice/product_unit/create', [ProductServiceUnitController::class, 'invoiceUnitCreate'])->name('invoice.create_product_unit');
     Route::post('invoice/product_unit_store', [ProductServiceUnitController::class, 'invoiceUnitStore'])->name('invoice.product_unit_store');
+    
+    
+    Route::get('invoice/currency/create', [SystemController::class, 'invoiceCurrency'])->name('invoice.create_currency');
     //Vendor
     Route::group(
         [

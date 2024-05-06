@@ -484,7 +484,7 @@
                                                 <th class="text-dark">{{ __('Discount') }}</th>
                                                 <th class="text-dark">{{ __('Tax') }}</th>
                                                 <th class="text-dark">{{ __('Description') }}</th>
-                                                <th class="text-end text-dark" width="12%">{{ __('Price') }}<br>
+                                                <th class="text-end text-dark">{{ __('Price') }}<br>
                                                     <small
                                                         class="text-danger font-weight-bold">{{ __('after tax & discount') }}</small>
                                                 </th>
@@ -560,7 +560,7 @@
                                                                             $taxPrice = \Utility::taxRate($getTaxData[$tax]['rate'], $iteam->price, $iteam->quantity);
                                                                             $totalTaxPrice += $taxPrice;
                                                                             $itemTax['name'] = $getTaxData[$tax]['name'];
-                                                                            $itemTax['rate'] = $getTaxData[$tax]['rate'] . '%';
+                                                                            $itemTax['rate'] = $getTaxData[$tax]['rate'];
                                                                             $itemTax['price'] = \Auth::user()->priceFormat($taxPrice);
 
                                                                             $itemTaxes[] = $itemTax;
