@@ -186,7 +186,7 @@
 </head>
 <!-- id="boxes" -->
 <body>
-    <div class="main_parent_div" >
+    <div class="main_parent_div" id="boxes">
         <div class=" main_div">
 
             <div class="upper_div">
