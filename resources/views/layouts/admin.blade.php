@@ -259,8 +259,8 @@
             </div>
         </div>
     </div>
-    @include('partials.admin.footer')
-    @include('Chatify::layouts.footerLinks')
+    <!-- @include('partials.admin.footer')
+    @include('Chatify::layouts.footerLinks') -->
 
 </body>
 
