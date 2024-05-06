@@ -552,7 +552,7 @@ class SystemController extends Controller
             $currnocLang = NOC::where('created_by', \Auth::user()->id)->where('lang', $noclang)->first();
 
             $post = $request->all();
-
+print_r($setting);die;
             return view('settings.company', compact('setting', 'company_payment_setting', 'timezones',
                 'ips', 'EmailTemplates', 'currOfferletterLang', 'Offerletter', 'offerlang', 'Joiningletter',
                 'currjoiningletterLang', 'joininglang', 'experience_certificate', 'curr_exp_cetificate_Lang',
