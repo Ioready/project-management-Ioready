@@ -2326,7 +2326,7 @@ class SystemController extends Controller
     
     public function currencyPreview(Request $request)
     {
-        $decimal_separator = $request->decimal_separator == 'dot' ? ',' : ',';
+        $decimal_separator = $request->decimal_separator == 'dot' ? '.' : ',';
         $thousand_separator = $request->thousand_separator == 'dot' ? '.' : ',';
 
         $currency = $request->currency_symbol == 'withcurrencysymbol' ? $request->site_currency_symbol : $request->site_currency;
@@ -2340,14 +2340,14 @@ class SystemController extends Controller
 
     public function currencySalaryPreview(Request $request)
     {
-        $decimal_separator = $request->decimal_separator == 'dot' ? ',' : ',';
-        $thousand_separator = $request->thousand_separator == 'dot' ? '.' : ',';
+        $salary_decimal_separator = $request->salary_decimal_separator == 'dot' ? '.' : ',';
+        $salary_thousand_separator = $request->salary_thousand_separator == 'dot' ? '.' : ',';
 
-        $currency = $request->currency_symbol == 'withcurrencysymbol' ? $request->site_salary_currency_symbol : $request->site_salary_currency;
+        $currency = $request->salary_currency_symbol == 'withsalarycurrencysymbol' ? $request->site_salary_currency_symbol : $request->site_salary_currency;
         $decimal_number = $request->decimal_number;
-        $currency_space = $request->currency_space;
+        $salary_currency_space = $request->salary_currency_space;
 
-        $price =  (($request->site_salary_currency_symbol_position == "pre") ? $currency : '') . ($currency_space == 'withspace' ? ' ' : '') . number_format(10000, $decimal_number , $decimal_separator, $thousand_separator) . ($currency_space == 'withspace' ? ' ' : '') . (($request->site_salary_currency_symbol_position == "post") ? $currency : '');
+        $price =  (($request->site_salary_currency_symbol_position == "pre") ? $currency : '') . ($salary_currency_space == 'salarywithspace' ? ' ' : '') . number_format(10000, $decimal_number , $salary_decimal_separator, $salary_thousand_separator) . ($salary_currency_space == 'salarywithspace' ? ' ' : '') . (($request->site_salary_currency_symbol_position == "post") ? $currency : '');
 
         return $price;
     }
@@ -2359,7 +2359,7 @@ class SystemController extends Controller
         $user = \Auth::user();
 
         $post = $request->all();
-
+// print_r($post);die;
         unset($post['_token']);
 
         $settings = Utility::settings();

@@ -108,7 +108,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $length = strlen(trim($number[0]));
         if($length > 3)
         {
-            $decimal_separator = Utility::getValByName('decimal_separator') == 'dot' ? ',' : ',';
+            $decimal_separator = Utility::getValByName('decimal_separator') == 'dot' ? '.' : ',';
             $thousand_separator = Utility::getValByName('thousand_separator') == 'dot' ? '.' : ',';
         }
         else
@@ -131,7 +131,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $length = strlen(trim($number[0]));
         if($length > 3)
         {
-            $decimal_separator = Utility::getValByName('decimal_separator') == 'dot' ? ',' : ',';
+            $decimal_separator = Utility::getValByName('decimal_separator') == 'dot' ? '.' : ',';
             $thousand_separator = Utility::getValByName('thousand_separator') == 'dot' ? '.' : ',';
         }
         else

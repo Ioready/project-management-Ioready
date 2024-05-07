@@ -115,7 +115,7 @@
                                                 <td>{{ $allowance->employee()->name }}</td>
                                                 <td>{{ $allowance->allowance_option()->name }}</td>
                                                 <td>{{ $allowance->title }}</td>
-                                                <td>{{  \Auth::user()->priceFormat($allowance->amount) }}</td>
+                                                <td>{{  \Auth::user()->salaryPriceFormat($allowance->amount) }}</td>
                                                 @can('delete set salary')
                                                     <td>
                                                         @can('edit allowance')
@@ -180,7 +180,7 @@
                                             <tr>
                                                 <td>{{ $commission->employee()->name }}</td>
                                                 <td>{{ $commission->title }}</td>
-                                                <td>{{  \Auth::user()->priceFormat($commission->amount )}}</td>
+                                                <td>{{  \Auth::user()->salaryPriceFormat($commission->amount )}}</td>
 
                                                 <td class="text-end">
                                                     @can('edit commission')
@@ -278,7 +278,7 @@
                                                 <td>{{ $loan->employee()->name }}</td>
                                                 <td>{{ $loan->loan_option()->name }}</td>
                                                 <td>{{ $loan->title }}</td>
-                                                <td>{{  \Auth::user()->priceFormat($loan->amount) }}</td>
+                                                <td>{{  \Auth::user()->salaryPriceFormat($loan->amount) }}</td>
                                                 <td>{{  \Auth::user()->dateFormat($loan->start_date) }}</td>
                                                 <td>{{ \Auth::user()->dateFormat( $loan->end_date) }}</td>
 
@@ -355,7 +355,7 @@
                                                 <td>{{ $saturationdeduction->employee()->name }}</td>
                                                 <td>{{ $saturationdeduction->deduction_option()->name }}</td>
                                                 <td>{{ $saturationdeduction->title }}</td>
-                                                <td>{{ \Auth::user()->priceFormat( $saturationdeduction->amount )}}</td>
+                                                <td>{{ \Auth::user()->salaryPriceFormat( $saturationdeduction->amount )}}</td>
 
                                                 <td class="text-end">
                                                     @can('edit saturation deduction')
@@ -423,7 +423,7 @@
                                             <tr>
                                                 <td>{{ $otherpayment->employee()->name }}</td>
                                                 <td>{{ $otherpayment->title }}</td>
-                                                <td>{{  \Auth::user()->priceFormat($otherpayment->amount )}}</td>
+                                                <td>{{  \Auth::user()->salaryPriceFormat($otherpayment->amount )}}</td>
 
                                                 <td class="text-end">
                                                     @can('edit other payment')
@@ -508,7 +508,7 @@
                                                 <td>{{ $overtime->title }}</td>
                                                 <td>{{ $overtime->number_of_days }}</td>
                                                 <td>{{ $overtime->hours }}</td>
-                                                <td>{{ \Auth::user()->priceFormat( $overtime->rate) }}</td>
+                                                <td>{{ \Auth::user()->salaryPriceFormat( $overtime->rate) }}</td>
 
                                                 <td class="text-end">
                                                     @can('edit overtime')

@@ -383,7 +383,7 @@
         });
     </script>
     <script>
-        $(document).on('keyup change', '.Salary_currency_setting', function() {
+        $(document).on('keyup change', '.Salary_currency_preview', function() {
             var data = $('#Salary_currency_setting').serialize();
             $.ajax({
                 type: 'POST',
@@ -1303,7 +1303,7 @@
                         {{ Form::close() }}
                     </div>
 
-                    <!--Currency Settings-->
+                    <!--Salary Currency Settings-->
                     <div id="salary-currency-settings" class="card">
                         <div class="card-header">
                             <h5>{{ __('Salary Currency Settings') }}</h5>
@@ -1336,7 +1336,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     {{ Form::label('decimal_number', __('Decimal Number Format'), ['class' => 'form-label']) }}
-                                    {{ Form::number('decimal_number', null, ['class' => 'form-control currency_preview']) }}
+                                    {{ Form::number('decimal_number', null, ['class' => 'form-control Salary_currency_preview']) }}
                                     @error('decimal_number')
                                         <span class="invalid-decimal_number" role="alert">
                                             <strong class="text-danger">{{ $message }}</strong>
@@ -1344,28 +1344,28 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="decimal_separator"
+                                    <label for="salary_decimal_separator"
                                         class="form-label">{{ __('Decimal Separator') }}</label>
-                                    <select type="text" name="decimal_separator"
-                                        class="form-control selectric currency_preview" id="decimal_separator">
+                                    <select type="text" name="salary_decimal_separator"
+                                        class="form-control selectric Salary_currency_preview" id="decimal_separator">
                                         <option value="dot"
-                                            @if (@$setting['decimal_separator'] == 'dot') selected="selected" @endif>
+                                            @if (@$setting['salary_decimal_separator'] == 'dot') selected="selected" @endif>
                                             {{ __('Dot') }}</option>
                                         <option value="comma"
-                                            @if (@$setting['decimal_separator'] == 'comma') selected="selected" @endif>
+                                            @if (@$setting['salary_decimal_separator'] == 'comma') selected="selected" @endif>
                                             {{ __('Comma') }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="thousand_separator"
+                                    <label for="salary_thousand_separator"
                                         class="form-label">{{ __('Thousands Separator') }}</label>
-                                    <select type="text" name="thousand_separator"
-                                        class="form-control selectric currency_preview" id="thousand_separator">
+                                    <select type="text" name="salary_thousand_separator"
+                                        class="form-control selectric Salary_currency_preview" id="thousand_separator">
                                         <option value="dot"
-                                            @if (@$setting['thousand_separator'] == 'dot') selected="selected" @endif>
+                                            @if (@$setting['salary_thousand_separator'] == 'dot') selected="selected" @endif>
                                             {{ __('Dot') }}</option>
                                         <option value="comma"
-                                            @if (@$setting['thousand_separator'] == 'comma') selected="selected" @endif>
+                                            @if (@$setting['salary_thousand_separator'] == 'comma') selected="selected" @endif>
                                             {{ __('Comma') }}</option>
                                     </select>
                                 </div>
@@ -1374,7 +1374,7 @@
                                         for="example3cols3Input">{{ __('Currency Symbol Position') }}</label>
                                     <div class="row ms-1">
                                         <div class="form-check col-md-6">
-                                            <input class="form-check-input currency_preview" type="radio"
+                                            <input class="form-check-input Salary_currency_preview" type="radio"
                                                 name="site_salary_currency_symbol_position" value="pre"
                                                 @if (@$setting['site_salary_currency_symbol_position'] == 'pre') checked @endif id="flexCheckDefault">
                                             <label class="form-check-label" for="flexCheckDefault">
@@ -1382,7 +1382,7 @@
                                             </label>
                                         </div>
                                         <div class="form-check col-md-6">
-                                            <input class="form-check-input currency_preview" type="radio"
+                                            <input class="form-check-input Salary_currency_preview" type="radio"
                                                 name="site_salary_currency_symbol_position" value="post"
                                                 @if (@$setting['site_salary_currency_symbol_position'] == 'post') checked @endif id="flexCheckChecked">
                                             <label class="form-check-label" for="flexCheckChecked">
@@ -1395,7 +1395,7 @@
                                     {{ Form::label('currency_space', __('Currency Symbol Space'), ['class' => 'form-label']) }}
                                     <div class="row ms-1">
                                         <div class="form-check col-md-6">
-                                            <input class="form-check-input currency_preview" type="radio"
+                                            <input class="form-check-input Salary_currency_preview" type="radio"
                                                 name="salary_currency_space" value="salarywithspace"
                                                 @if (@$setting['salary_currency_space'] == 'salarywithspace') checked @endif id="withspace">
                                             <label class="form-check-label" for="salarywithspace">
@@ -1403,7 +1403,7 @@
                                             </label>
                                         </div>
                                         <div class="form-check col-md-6">
-                                            <input class="form-check-input currency_preview" type="radio"
+                                            <input class="form-check-input Salary_currency_preview" type="radio"
                                                 name="salary_currency_space" value="salarywithoutspace"
                                                 @if (@$setting['salary_currency_space'] == 'salarywithoutspace') checked @endif id="withoutspace">
                                             <label class="form-check-label" for="salarywithoutspace">
@@ -1416,7 +1416,7 @@
                                     {{ Form::label('salary_currency_symbol', __('Currency Symbol & Name'), ['class' => 'form-label']) }}
                                     <div class="row ms-1">
                                         <div class="form-check col-md-6">
-                                            <input class="form-check-input currency_preview" type="radio"
+                                            <input class="form-check-input Salary_currency_preview" type="radio"
                                                 name="salary_currency_symbol" value="withsalarycurrencysymbol"
                                                 @if (@$setting['salary_currency_symbol'] == 'withsalarycurrencysymbol') checked @endif id="withsalarycurrencysymbol">
                                             <label class="form-check-label" for="withsalarycurrencysymbol">
@@ -1424,9 +1424,9 @@
                                             </label>
                                         </div>
                                         <div class="form-check col-md-6">
-                                            <input class="form-check-input currency_preview" type="radio"
-                                                name="salary_currency_name" value="withsalarycurrencyname"
-                                                @if (@$setting['salary_currency_name'] == 'withsalarycurrencyname') checked @endif id="withsalarycurrencyname">
+                                            <input class="form-check-input Salary_currency_preview" type="radio"
+                                                name="salary_currency_symbol" value="withsalarycurrencyname"
+                                                @if (@$setting['salary_currency_symbol'] == 'withsalarycurrencyname') checked @endif id="withsalarycurrencyname">
                                             <label class="form-check-label" for="withsalarycurrencyname">
                                                 {{ __('With Salary Currency Name') }}
                                             </label>

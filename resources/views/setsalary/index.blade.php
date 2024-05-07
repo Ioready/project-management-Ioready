@@ -33,9 +33,12 @@
                                     </td>
                                     <td>{{ $employee->name }}</td>
                                     <td>{{ !empty($employee->salaryType) ? $employee->salaryType->name : '-' }}</td>
-                                    <td>{{  \Auth::user()->priceFormat($employee->salary) }}</td>
-                                    <td>{{  !empty($employee->get_net_salary()) ?\Auth::user()->priceFormat($employee->get_net_salary()):'' }}</td>
+                                    <td>{{  \Auth::user()->salaryPriceFormat($employee->salary) }}</td>
+                                    <td>{{  !empty($employee->get_net_salary()) ?\Auth::user()->salaryPriceFormat($employee->get_net_salary()):'' }}</td>
+                                    <!-- <td>{{  \Auth::user()->priceFormat($employee->salary) }}</td>
+                                    <td>{{  !empty($employee->get_net_salary()) ?\Auth::user()->priceFormat($employee->get_net_salary()):'' }}</td> -->
                                     <td>
+                                    
                                     <div class="action-btn bg-primary ms-2">
                                         <a href="{{route('setsalary.show',$employee->id)}}" class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Set Salary')}}" data-original-title="{{__('View')}}">
                                             <i class="ti ti-eye text-white"></i>

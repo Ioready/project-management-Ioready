@@ -262,12 +262,13 @@ class Utility extends Model
             'color_flag'=>'false',
 
             'currency_space'=>'withspace',
-            'decimal_separator'=>'dot',
-            'thousand_separator'=>'dot',
-            'currency_symbol' => 'withcurrencysymbol',
-            'salary_currency_symbol' => 'withsalarycurrencysymbol',
-            'salary_currency_space'=>'salarywithspace',
-            'site_salary_currency'=>'site_salary_currency',
+            'salary_decimal_separator'=>'',
+            'salary_thousand_separator'=>'',
+            'salary_currency_symbol' => '',
+            'salary_currency_space'=>'',
+            'site_salary_currency'=>'',
+            'site_salary_currency_symbol' =>'',
+            
         ];
 
         foreach ($data as $row) {

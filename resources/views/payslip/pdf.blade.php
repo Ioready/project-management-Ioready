@@ -2,7 +2,15 @@
     $logo=\App\Models\Utility::get_file('uploads/logo');
     $company_logo = \App\Models\Utility::GetLogo();
 @endphp
+<style>
+    .last_div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
 
+</style>
 <div class="card bg-none card-box">
     <div class="card-body">
 
@@ -263,16 +271,38 @@
             </div>
             <hr>
             <div class="text-md-right pb-2 text-sm">
-                <div class="float-lg-left mb-lg-0 mb-3 ">
-                    <p class="mt-2">{{__('Employee Signature')}}</p>
+            <div class="last_div">
+            <div class="left_last">
+                    <!-- <img src="{{url('/images/stamp.png')}}" alt="" style="height: 8rem;"> -->
+                    <p class="payment_p" style="color: black; padding-left: 15px;">{{__('Paid By')}}  IOREADY SDN BHD</p>
+                    <!-- <img src="{{url('/images/bg3.png')}}" alt=""  style="position: absolute; left: 0; bottom: 0; height: 2rem;"> -->
                 </div>
-                <p class="mt-2 "> {{__('Paid By')}}</p>
+             </div>
             </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
+<script>
+
+    var filename = $('#filename').val()
+
+    function saveAsPDF() {
+        var element = document.getElementById('printableArea');
+        var opt = {
+            margin: 0.9,
+            filename: filename,
+            image: {type: 'jpeg,jpg,png', quality: 1},
+            html2canvas: {scale: 4, dpi: 72, letterRendering: true},
+            jsPDF: {unit: 'in', format: 'A4'}
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+
+
+<!-- <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
 <script>
 
     var filename = $('#filename').val()
@@ -288,4 +318,6 @@
         };
         html2pdf().set(opt).from(element).save();
     }
-</script>
+</script> -->
+
+
