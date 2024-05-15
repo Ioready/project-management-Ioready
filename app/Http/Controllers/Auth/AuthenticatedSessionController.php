@@ -318,7 +318,7 @@ class AuthenticatedSessionController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
-    public function showLoginForm($lang = '')
+    public function showLoginForm()
     {
 
         $langList = Utility::languages()->toArray();

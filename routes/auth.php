@@ -17,8 +17,7 @@ Route::get('/register/{ref_id?}/{lang?}', [RegisteredUserController::class, 'sho
 Route::post('/register', [RegisteredUserController::class, 'store'])
                 ->middleware('guest');
 
-Route::get('/login/{lang?}', [AuthenticatedSessionController::class, 'showLoginForm'])
-                ->middleware('guest')
+Route::get('/login', [AuthenticatedSessionController::class, 'showLoginForm'])
                 ->name('login');
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
