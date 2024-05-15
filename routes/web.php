@@ -272,6 +272,7 @@ Route::get('timesheet-table-view', [TimesheetController::class, 'filterTimesheet
 // Invoice Payment Gateways
 Route::post('customer/{id}/payment', [StripePaymentController::class, 'addpayment'])->name('customer.payment');
 Route::get('invoice/pdf/{id}', [InvoiceController::class, 'invoice'])->name('invoice.pdf')->middleware(['XSS', 'revalidate']);
+Route::get('invoice/showinvoice/{id}', [InvoiceController::class, 'showinvoice'])->name('invoice.showinvoice')->middleware(['XSS', 'revalidate']);
 
 Route::get('users/{id}/login-with-company', [UserController::class, 'LoginWithCompany'])->name('login.with.company')->middleware(['auth']);
 Route::get('login-with-company/exit', [UserController::class, 'ExitCompany'])->name('exit.company')->middleware(['auth']);

@@ -1101,6 +1101,107 @@ class InvoiceController extends Controller
 
     }
 
+    public function showinvoice($invoice_id)
+    {
+        $user_id = \Auth::user()->id;
+        $settings = Utility::settings();
+        $getCompanyPaymentSetting = Utility::getCompanyPaymentSetting($user_id);
+
+
+        $invoiceId = Crypt::decrypt($invoice_id);
+        $invoice = Invoice::where('id', $invoiceId)->first();
+
+        $data = DB::table('settings');
+        $data = $data->where('created_by', '=', $invoice->created_by);
+        $data1 = $data->get();
+
+        foreach ($data1 as $row) {
+            $settings[$row->name] = $row->value;
+        }
+
+        $customer = $invoice->customer;
+        $items = [];
+        $totalTaxPrice = 0;
+        $totalQuantity = 0;
+        $totalRate = 0;
+        $totalDiscount = 0;
+        $taxesData = [];
+        foreach ($invoice->items as $product) {
+            $item = new \stdClass();
+            $item->name = !empty($product->product) ? $product->product->name : '';
+            $item->quantity = $product->quantity;
+            $item->tax = $product->tax;
+            $item->unit = !empty($product->product) ? $product->product->unit_id : '';
+            $item->discount = $product->discount;
+            $item->price = $product->price;
+            $item->description = $product->description;
+
+            $totalQuantity += $item->quantity;
+            $totalRate += $item->price;
+            $totalDiscount += $item->discount;
+
+            $taxes = Utility::tax($product->tax);
+
+            $itemTaxes = [];
+            if (!empty($item->tax)) {
+                foreach ($taxes as $tax) {
+                    $taxPrice = Utility::taxRate($tax->rate, $item->price, $item->quantity, $item->discount);
+                    $totalTaxPrice += $taxPrice;
+
+                    $itemTax['name'] = $tax->name;
+                    $itemTax['rate'] = $tax->rate . '%';
+                    $itemTax['price'] = Utility::priceFormat($settings, $taxPrice);
+                    $itemTax['tax_price'] = $taxPrice;
+                    $itemTaxes[] = $itemTax;
+
+                    if (array_key_exists($tax->name, $taxesData)) {
+                        $taxesData[$tax->name] = $taxesData[$tax->name] + $taxPrice;
+                    } else {
+                        $taxesData[$tax->name] = $taxPrice;
+                    }
+
+                }
+                $item->itemTax = $itemTaxes;
+            } else {
+                $item->itemTax = [];
+            }
+            $items[] = $item;
+        }
+
+        $invoice->itemData = $items;
+        $invoice->totalTaxPrice = $totalTaxPrice;
+        $invoice->totalQuantity = $totalQuantity;
+        $invoice->totalRate = $totalRate;
+        $invoice->totalDiscount = $totalDiscount;
+        $invoice->taxesData = $taxesData;
+        $invoice->customField = CustomField::getData($invoice, 'invoice');
+        $customFields = [];
+        if (!empty(\Auth::user())) {
+            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
+        }
+
+        $logo = asset(Storage::url('uploads/logo/'));
+        $company_logo = Utility::getValByName('company_logo_dark');
+        $settings_data = \App\Models\Utility::settingsById($invoice->created_by);
+        $invoice_logo = $settings_data['invoice_logo'];
+        if (isset($invoice_logo) && !empty($invoice_logo)) {
+            $img = Utility::get_file('invoice_logo/') . $invoice_logo;
+        } else {
+            $img = asset($logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png'));      
+        }
+// print_r($invoice);die;
+        if ($invoice) {
+            $color = '#' . $settings['invoice_color'];
+            $font_color = Utility::getFontColor($color);
+
+            return view('invoice.templates.templateinvoice' , compact('invoice', 'color', 'settings', 'customer', 'img', 'font_color', 'customFields','getCompanyPaymentSetting'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+
+    }
+
+
     public function saveTemplateSettings(Request $request)
     {
 

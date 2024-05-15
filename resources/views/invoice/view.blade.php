@@ -327,6 +327,12 @@
                             </a>
                         </div>
                     @endif
+                    <div class="all-button-box mr-2">
+                        <a href="{{ route('invoice.showinvoice', \Crypt::encrypt($invoice->id)) }}" target="_blank"
+                        class="btn btn-sm btn-primary me-2">{{ __('View') }}
+                        </a>
+                    </div>
+
                     @if ($invoice->status != 4)
                         <div class="all-button-box mr-2">
                             <a href="{{ route('invoice.payment.reminder', $invoice->id) }}"
