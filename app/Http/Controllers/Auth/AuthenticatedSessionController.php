@@ -318,7 +318,7 @@ class AuthenticatedSessionController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
-    public function showLoginForm()
+    public function showLoginForm($lang = '')
     {
 
         $langList = Utility::languages()->toArray();
@@ -333,7 +333,7 @@ class AuthenticatedSessionController extends Controller
 
         $settings = Utility::settings();
 
-        return view('auth.login', compact('lang','settings'));
+        return view('auth.login', compact('lang'));
     }
 
     public function showLinkRequestForm($lang = '')
