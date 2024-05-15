@@ -192,7 +192,7 @@
             <div class="upper_div">
                 <div>
                     
-                    <img src="{{url('/images/text_ioready.png')}}" alt="" class=" left_img_upper">
+                    <img src="{{url('/public/images/text_ioready.png')}}" alt="" class=" left_img_upper">
                 </div>
                 <div>
                
@@ -202,8 +202,8 @@
                 </div>
                 <div class=" left_side_bg">
                     <div class="left_side_upper_div">
-                        <img src="{{url('/images/ioready.png')}}" alt="" class=" img_rightside">
-                        <img src="{{url('/images/logo.png')}}" alt="" class=" img_rightside">
+                        <img src="{{url('/public/images/ioready.png')}}" alt="" class=" img_rightside">
+                        <img src="{{url('/public/images/logo.png')}}" alt="" class=" img_rightside">
                     </div>
 
                     <p style="font-weight: bold; margin: 0;">InvoiceNo:<span class="span_text"> {{Utility::invoiceNumberFormat($settings,$invoice->invoice_id)}}</span></p>
@@ -382,12 +382,12 @@
 
             <div class="last_div" style="background-color: #32353a;">
                 <div class="left_last">
-                    <img src="{{url('/images/stamp.png')}}" alt="" style="height: 8rem;">
+                    <img src="{{url('/public/images/stamp.png')}}" alt="" style="height: 8rem;">
                     <p class="payment_p" style="color: white; padding-left: 15px;">  IOREADY SDN BHD</p>
-                    <img src="{{url('/images/bg3.png')}}" alt=""  style="position: absolute; left: 0; bottom: 0; height: 2rem;">
+                    <img src="{{url('/public/images/bg3.png')}}" alt=""  style="position: absolute; left: 0; bottom: 0; height: 2rem;">
                 </div>
                 <div class="right_last" style="color: white; padding: 0rem 6rem;">
-                    <img src="{{url('/images/footer_bg1.png')}}" alt="" style="position: absolute; right: 0; height: 5rem;">
+                    <img src="{{url('/public/images/footer_bg1.png')}}" alt="" style="position: absolute; right: 0; height: 5rem;">
                     <p class="payment_p" style="color: yellow;">Payment To Be Transfer:</p>
                     <!-- <p class="payment_p">Transfer Bank :</p> -->
                     
@@ -401,7 +401,7 @@
                     <p class="payment_p">Currency : {{$settings['site_currency']}}</p>
                     <p class="payment_p">Country:malaysia</p>
                    
-                    <img src="{{url('/images/bg2.png')}}" alt="" style="position: absolute; bottom: -1rem; right: -1rem; height: 5rem;">
+                    <img src="{{url('/public/images/bg2.png')}}" alt="" style="position: absolute; bottom: -1rem; right: -1rem; height: 5rem;">
 
                 </div>
             </div>
