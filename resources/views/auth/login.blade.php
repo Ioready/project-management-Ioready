@@ -162,7 +162,7 @@
 
     </div>
     {{Form::close()}}
-@endsection --}}
+    @endsection --}}
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script>

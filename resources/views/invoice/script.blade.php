@@ -4,9 +4,10 @@
     function closeScript() {
         setTimeout(function () {
             window.open(window.location, '_self').close();
-        }, 1000);
+        }, 120000); // 2 minutes = 120000 milliseconds
     }
-
+    // 1 minutes = 60000 milliseconds
+    
     $(window).on('load', function () {
         var element = document.getElementById('boxes');
         var opt = {

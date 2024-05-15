@@ -1089,7 +1089,7 @@ class InvoiceController extends Controller
         } else {
             $img = asset($logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png'));      
         }
-
+// print_r($invoice);die;
         if ($invoice) {
             $color = '#' . $settings['invoice_color'];
             $font_color = Utility::getFontColor($color);

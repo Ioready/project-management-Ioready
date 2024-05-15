@@ -281,6 +281,7 @@ function summernote() {
 
 
 
+
 $(document).on("click", '.bs-pass-para', function () {
     var form = $(this).closest("form");
     const swalWithBootstrapButtons = Swal.mixin({
