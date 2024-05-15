@@ -6,11 +6,7 @@
     $company_logo = $settings['company_logo'] ?? '';
 @endphp
 
-@push('custom-scripts')
-@if ($settings['recaptcha_module'] == 'on')
-        {!! NoCaptcha::renderJs() !!}
-@endif
-@endpush
+
 
 @section('page-title')
     {{ __('Login') }}
@@ -162,7 +158,7 @@
 
     </div>
     {{Form::close()}}
-    @endsection --}}
+@endsection --}}
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script>
