@@ -195,9 +195,14 @@
                     <img src="{{url('/public/images/text_ioready.png')}}" alt="" class=" left_img_upper">
                 </div>
                 <div>
-               
+                {!! DNS2D::getBarcodeHTML(
+                                            route('invoice.link.copy', \Illuminate\Support\Facades\Crypt::encrypt($invoice->id)),
+                                            'QRCODE',
+                                            2,
+                                            2,
+                                        ) !!}
                 <!-- <img src="{{url('/images/qr.png')}}" alt="" class="qr_code"> -->
-                {!! DNS2D::getBarcodeHTML(route('invoice.link.copy',\Crypt::encrypt($invoice->invoice_id)), "QRCODE",2,2) !!}
+                <!-- {!! DNS2D::getBarcodeHTML(route('invoice.link.copy',\Crypt::encrypt($invoice->invoice_id)), "QRCODE",2,2) !!} -->
                 <!-- <img src="{{url('/images/qr.png')}}" alt="" class="qr_code"> -->
                 </div>
                 <div class=" left_side_bg">
