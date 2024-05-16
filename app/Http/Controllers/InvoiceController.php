@@ -1257,11 +1257,11 @@ class InvoiceController extends Controller
 
         $id = Crypt::decrypt($invoiceId);
         $invoice = Invoice::with(['creditNote','payments.bankAccount','items.product.unit'])->find($id);
-
+print_r($invoice->created_by);die;
         $settings = Utility::settingsById($invoice->created_by);
-
+        // print_r($settings);die;
         if (!empty($invoice)) {
-
+            // print_r($invoice);die;
             $user_id = $invoice->created_by;
             $user = User::find($user_id);
             $invoicePayment = InvoicePayment::where('invoice_id', $invoice->id)->get();
