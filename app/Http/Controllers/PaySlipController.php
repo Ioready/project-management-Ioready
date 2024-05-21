@@ -679,13 +679,7 @@ public function send($id, $month)
         
         $payslipDetail = Utility::employeePayslipDetail($payslip->employee_id, $month);
 
-        // Generate PDF
-        $pdf = PDF::loadView('payslip.pdf', compact('payslip', 'employee', 'payslipDetail'));
-        
-        // Save PDF to storage
-        $pdfPath = "payslips/{$employee->id}_{$month}.pdf";
-        Storage::put("public/{$pdfPath}", $pdf->output());
-
+    
         $payslipArr = [
             'employee_name' => $employee->name,
             'employee_email' => $employee->email,
