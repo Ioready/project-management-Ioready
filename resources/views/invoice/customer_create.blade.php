@@ -95,6 +95,23 @@
         </div>
         <h6 class="sub-title">{{__('Shipping Address')}}</h6>
         <div class="row">
+
+           
+            <!-- <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="form-group" >
+                    {{ Form::label('shipping_id', __('Select Shipping Address'),['class'=>'form-label']) }}
+                    
+                    {{ Form::select('shipping_id', $shipping, array('class' => 'form-control select','id'=>'shipping_id','data-url'=>route('invoice.customer'),'required'=>'required')) }}
+
+                </div>
+            </div> -->
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="form-group">
+                    {{ Form::label('shipping_id', __('Select Shipping Address'), ['class' => 'form-label']) }}
+                    {{ Form::select('shipping_id', $shipping->pluck('customer_name', 'id'), null, ['class' => 'form-control select', 'id' => 'shipping_id', 'data-url' => route('invoice.shipping_address'), 'required' => 'required']) }}
+                </div>
+            </div>
+
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="form-group">
                     {{Form::label('shipping_name',__('Name'),array('class'=>'form-label')) }}
@@ -158,4 +175,36 @@
     <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
     <input type="submit" value="{{__('Create')}}" class="btn btn-primary">
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#shipping_id').change(function(){
+            var selectedValue = $(this).val();
+            var url = $(this).data('url');
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: { shipping_id: selectedValue },
+                success: function(response) {
+                    if(response.success) {
+                        // Populate the fields with the received data
+                        $('#shipping_name').val(response.data.customer_name);
+                        $('#shipping_phone').val(response.data.phone);
+                        $('#shipping_address').val(response.data.address);
+                        $('#shipping_city').val(response.data.city);
+                        $('#shipping_state').val(response.data.state);
+                        $('#shipping_country').val(response.data.country);
+                        $('#shipping_zip').val(response.data.zip_code);
+                    } else {
+                        alert('Shipping address not found');
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
 {{Form::close()}}

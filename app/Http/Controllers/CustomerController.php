@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Exports\CustomerExport;
 use App\Imports\CustomerImport;
 use App\Models\Customer;
+use App\Models\ShippingAddress;
+
 use App\Models\CustomField;
 use App\Models\Transaction;
 use App\Models\Utility;
@@ -62,16 +64,51 @@ class CustomerController extends Controller
     {
         if(\Auth::user()->can('create customer'))
         {
+            $shipping = ShippingAddress::where('created_by', \Auth::user()->creatorId())->get();
+
             $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
-            return view('invoice.customer_create', compact('customFields'));
+            return view('invoice.customer_create')->with([
+                'customFields' => $customFields,
+                'shipping' => $shipping,
+                
+            ]);
+            // return view('invoice.customer_create', compact(['customFields, shipping']));
         }
         else
         {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
-
+    public function getCustomerData(Request $request)
+    {
+        $shippingId = $request->input('shipping_id');
+        
+        // Fetch the shipping address data based on the ID
+        $shippingAddress = ShippingAddress::find($shippingId);
+        
+        if ($shippingAddress) {
+            // Return the data as a JSON response
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'customer_name' => $shippingAddress->customer_name,
+                    'phone' => $shippingAddress->phone,
+                    'address' => $shippingAddress->address,
+                    'city' => $shippingAddress->city,
+                    'state' => $shippingAddress->state,
+                    'country' => $shippingAddress->country,
+                    'zip_code' => $shippingAddress->zip_code,
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Shipping address not found',
+            ]);
+        }
+    }
+    
 
     public function CustomerStore(Request $request)
     {

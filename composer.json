@@ -26,6 +26,7 @@
         "mercadopago/dx-php": "^2.5",
         "midtrans/midtrans-php": "^2.5",
         "milon/barcode": "^10.0",
+        "misterspelik/laravel-pdf": "^1.1",
         "mollie/mollie-api-php": "^2.25",
         "munafio/chatify": "1.2",
         "nwidart/laravel-modules": "9.*",

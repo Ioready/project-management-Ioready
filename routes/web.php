@@ -144,6 +144,7 @@ use App\Http\Controllers\ProjectExpenseController;
 use App\Http\Controllers\NepalstePaymnetController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\ReferralProgramController;
+use App\Http\Controllers\ShippingAddressController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -414,6 +415,8 @@ Route::group(['middleware' => ['verified']], function () {
     );
 
     Route::get('invoice/customer/create', [CustomerController::class, 'customerCreate'])->name('invoice.create_customer');
+    Route::get('/invoice/shipping-address', [CustomerController::class, 'getCustomerData'])->name('invoice.shipping_address');
+
     Route::post('invoice/customer_store', [CustomerController::class, 'CustomerStore'])->name('invoice.customer_store');
 
     Route::get('invoice/category/create', [ProductServiceCategoryController::class, 'categoryCreate'])->name('invoice.create_category');
@@ -551,7 +554,12 @@ Route::group(['middleware' => ['verified']], function () {
     Route::post('/bill/template/setting', [BillController::class, 'saveBillTemplateSettings'])->name('bill.template.setting');
 
     Route::resource('taxes', TaxController::class)->middleware(['auth', 'XSS', 'revalidate']);
-
+    Route::resource('shipping-address', ShippingAddressController::class)->middleware(['auth', 'XSS', 'revalidate']);
+    Route::get('shipping-address', [ShippingAddressController::class, 'index'])->name('shipping-address.index')->middleware(['auth', 'XSS']);
+    Route::get('shipping-address/edit/{id}', [ShippingAddressController::class, 'edit'])->name('shipping-address.edit')->middleware(['auth', 'XSS']);
+    Route::put('shipping-address/update/{id}', [ShippingAddressController::class, 'update'])->name('shipping-address.update')->middleware(['auth', 'XSS']);
+    Route::DELETE('shipping-address/delete/{id}', [ShippingAddressController::class, 'destroy'])->name('shipping-address.destroy')->middleware(['auth', 'XSS']);
+    
     Route::get('revenue/index', [RevenueController::class, 'index'])->name('revenue.index')->middleware(['auth', 'XSS', 'revalidate']);
 
     Route::resource('revenue', RevenueController::class)->middleware(['auth', 'XSS', 'revalidate']);
@@ -1707,6 +1715,6 @@ Route::group(['middleware' => ['verified']], function () {
 
 });
 
-
+Route::get('payslip/pdf_download/{id}/{m}', [PaySlipController::class, 'pdfDownload'])->name('payslip.pdf.downloads');
 Route::any('/cookie-consent', [SystemController::class, 'CookieConsent'])->name('cookie-consent');
 

@@ -2633,6 +2633,7 @@ class Utility extends Model
             '{payslip_name}',
             '{payslip_salary_month}',
             '{payslip_url}',
+            '{pdf_download}',
             '{promotion_designation}',
             '{promotion_title}',
             '{promotion_date}',
@@ -2773,6 +2774,7 @@ class Utility extends Model
             'payslip_name' => '-',
             'payslip_salary_month' => '-',
             'payslip_url' => '-',
+            'pdf_download'=> '-',
             'promotion_designation' => '-',
             'promotion_title' => '-',
             'promotion_date' => '-',
@@ -5690,7 +5692,43 @@ class Utility extends Model
             'payslip_sent' => [
                 'subject' => 'Payslip Sent',
                 'lang' => [
-                    'en' => '<p segoe="" ui",="" arial;="" font-size:="" 14px;"="" style="line-height: 28px;">Subject :&nbsp; " HR&nbsp; Department / Company to send&nbsp; payslips by email at time of confirmation of payslip. "</p><p segoe="" ui",="" arial;="" font-size:="" 14px;"="" style="line-height: 28px;">﻿Dear ,{payslip_name}</p><p segoe="" ui",="" arial;="" font-size:="" 14px;"="" style="line-height: 28px;"><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">&nbsp; &nbsp;&nbsp;</span>&nbsp; &nbsp; Hope this email finds you well! Please see attached payslip for {payslip_salary_month} . Simply click on the button below :&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {payslip_url}</p><p segoe="" ui",="" arial;="" font-size:="" 14px;"="" style="line-height: 28px;">Feel free to&nbsp; reach out if you have any questions.</p><p segoe="" ui",="" arial;="" font-size:="" 14px;"="" style="line-height: 28px;">Regards ,</p><p segoe="" ui",="" arial;="" font-size:="" 14px;"="" style="line-height: 28px;"><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">HR Department ,</span></p><p segoe="" ui",="" arial;="" font-size:="" 14px;"="" style="line-height: 28px;"><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">{app_name}</span><br></p><p segoe="" ui",="" arial;="" font-size:="" 14px;"="" style="line-height: 28px;">{app_url}</p><p></p>',
+                    'en' => '
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px;">
+    Subject: "HR Department / Company to send payslips by email at time of confirmation of payslip."
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px;">
+    Dear {payslip_name},
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px;">
+    Hope this email finds you well! Please see attached payslip for {payslip_salary_month}. Simply click on the button below:
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px; text-align: center;">
+    <a href="{payslip_url}" style="display: inline-block; padding: 10px 20px; font-size: 14px; color: #fff; background-color: #007bff; border-radius: 5px; text-decoration: none;">
+        View Payslip
+    </a>
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px; text-align: center;">
+    <a href="{pdf_download}" style="display: inline-block; padding: 10px 20px; font-size: 14px; color: #fff; background-color: #007bff; border-radius: 5px; text-decoration: none;">
+        download Payslip
+    </a>
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px;">
+    Feel free to reach out if you have any questions.
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px;">
+    Regards,
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px;">
+    HR Department,
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px;">
+    {app_name}
+</p>
+<p style="font-family: Segoe UI, Arial; font-size: 14px; line-height: 28px;">
+    {app_url}
+</p>
+'
+,
                 ],
             ],
             'promotion_sent' => [

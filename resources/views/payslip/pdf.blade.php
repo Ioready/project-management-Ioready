@@ -16,7 +16,11 @@
 
         <div class="text-end">
             <a href="#" class="btn btn-sm btn-primary" onclick="saveAsPDF()"><span class="ti ti-download"></span></a>
-            <a title="Mail Send" href="{{route('payslip.send',[$employee->id,$payslip->salary_month])}}" class="btn btn-sm btn-warning"><span class="ti ti-send"></span></a>
+            <a title="Mail Send" href="{{ route('payslip.send', [$employee->id, $payslip->salary_month]) }}" class="btn btn-sm btn-warning">
+    <span class="ti ti-send"></span>
+</a>
+
+            <!-- <a title="Mail Send" href="{{route('payslip.send',[$employee->id,$payslip->salary_month])}}" onclick="saveAsPDF()" class="btn btn-sm btn-warning"><span class="ti ti-send"></span></a> -->
         </div>
         <div class="invoice" id="printableArea">
             <div class="invoice-number">
